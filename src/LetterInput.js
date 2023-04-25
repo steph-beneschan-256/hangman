@@ -25,7 +25,7 @@ Props:
     * onGuessSubmitted: function to be called when the user has submitted a guess
 */
 
-export default function LetterInput({letterIsValid=defaultLetterIsValid, guessedLetters, onGuessSubmitted}) {
+export default function LetterInput({isValidLetter=defaultLetterIsValid, guessedLetters, onGuessSubmitted}) {
     const [inputLetter, setInputLetter] = useState('');
     const [canGuessLetter, setCanGuessLetter] = useState(false); // Whether the currently-input letter can be guessed
     const [errorMsg, setErrorMsg] = useState("");
@@ -50,7 +50,7 @@ export default function LetterInput({letterIsValid=defaultLetterIsValid, guessed
             setErrorMsg("Already guessed that letter.");
             setCanGuessLetter(false);
         }   
-        else if(!letterIsValid(newLetter)) {
+        else if(!isValidLetter(newLetter)) {
             setErrorMsg("Invalid letter.");
             setCanGuessLetter(false);
         }

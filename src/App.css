@@ -64,7 +64,8 @@
 }
 
 .guessed-letter {
-  margin: 0.5vw;
+  display: inline-block;
+  margin: 1vw;
   font-weight: bold;
   font-style: bold;
 }
@@ -82,4 +83,8 @@
 
 .letter-tile {
   border: solid 1px black;
+}
+
+.letter-tile .game-lost {
+  color: red;
 }
