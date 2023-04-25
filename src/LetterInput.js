@@ -8,6 +8,9 @@ Notes:
         - The component should take up less screen space
 */
 
+/*
+Default function for the letterIsValid prop of the LetterInput component (please see below)
+*/
 function defaultLetterIsValid(letter) {
     const p = /^[A-Za-z]$/; 
     return p.test(letter);
@@ -28,10 +31,9 @@ export default function LetterInput({letterIsValid=defaultLetterIsValid, guessed
     const [errorMsg, setErrorMsg] = useState("");
 
     function submitGuess(guess=inputLetter) {
-        console.log(`Already guessed letters: ${guessedLetters}`);
-        console.log(guess);
         if(canGuessLetter) {
             setInputLetter(''); //reset input letter in box
+            setCanGuessLetter(false);
             onGuessSubmitted(guess);
             console.log(`Guessed ${guess}`);
         }   
@@ -43,7 +45,7 @@ export default function LetterInput({letterIsValid=defaultLetterIsValid, guessed
             setErrorMsg("");
             setCanGuessLetter(false);
         }
-        else if(guessedLetters.indexOf(newLetter) !== -1) {
+        else if(guessedLetters.has(newLetter)) {
             //already guessed this letter
             setErrorMsg("Already guessed that letter.");
             setCanGuessLetter(false);

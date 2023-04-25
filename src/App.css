@@ -3,12 +3,6 @@
   margin: 1vw;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 /* --- For LetterInput component --- */
 .letter-input {
   text-align: center;
@@ -73,4 +67,19 @@
   margin: 0.5vw;
   font-weight: bold;
   font-style: bold;
+}
+
+.char-tile {
+  width: 5vw;
+  height: 7.5vw;
+  text-align: center;
+  padding-top: 1.25vw;
+  padding-bottom: 1.25vw;
+  font-size: 5vw;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.letter-tile {
+  border: solid 1px black;
 }
