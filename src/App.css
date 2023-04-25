@@ -1,0 +1,76 @@
+.App {
+  text-align: center;
+  margin: 1vw;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+/* --- For LetterInput component --- */
+.letter-input {
+  text-align: center;
+  padding: 5vw;
+  border: solid 1px black;
+  border-radius: 10px;
+}
+
+.letter-input h3 {
+  display: inline-block;
+}
+
+.letter-input .input-text {
+  min-width: 100px;
+  width: 10vw;
+  max-width: 400px;
+  min-height: 100px;
+  height: 10vw;
+  max-height: 400px;
+  aspect-ratio: 1;
+  font-size: x-large;
+  border: none;
+  border-radius: 20px;
+  background-color: rgb(156, 193, 223);
+  text-align: center;
+  margin: 4vw;
+  display: inline-block;
+}
+
+.letter-input .input-submit {
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  height: 10vw;
+  max-height: 50px;
+  cursor: pointer;
+}
+
+.letter-input .input-submit:disabled {
+  background-color: lightgray;
+  color: gray;
+  cursor: not-allowed;
+}
+
+.error-msg {
+  width: 100%;
+  height: 5vw;
+  max-height: 50px;
+  text-align: center;
+}
+
+/* --- Misc. --- */
+
+.guessed-letters {
+  background-color: white;
+  color: black;
+}
+
+.guessed-letter {
+  margin: 0.5vw;
+  font-weight: bold;
+  font-style: bold;
+}
