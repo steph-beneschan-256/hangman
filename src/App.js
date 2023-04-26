@@ -27,6 +27,9 @@ function App() {
   const [charsGuessed, setCharsGuessed] = useState(new Set());
   // How many incorrect letters the user has guessed
   const [penalties, setPenalties] = useState(0);
+
+  // Store each character that the user has guessed, mapping it to a boolean indicating whether the guess was correct
+  const [guessesMade, setGuessesMade] = useState(new Map());
   
   // How many penalties the player can make before losing the game (TODO: find reasonable number)
   const maxPenalties = 5;
@@ -41,13 +44,16 @@ function App() {
       setGameAnswer(answer);
       setUnrevealedLetters(new Set(new Array(...answer).filter(char => !isSpecialChar(char))));
       setCharsGuessed(new Set());
+      setGuessesMade(new Map());
       setPenalties(0);
 
       setGameInProgress(true);
     }
 
   function onGuessSubmitted(guessedChar) {
-    if(unrevealedLetters.has(guessedChar)) {
+    const guessWasCorrect = unrevealedLetters.has(guessedChar);
+
+    if(guessWasCorrect) {
       // remove guessedChar from unrevealedLetters
       let newSet = new Set(unrevealedLetters);
       newSet.delete(guessedChar);
@@ -69,11 +75,16 @@ function App() {
       // TODO: check whether the user has lost the game
     }
 
-    // add guessedChar to charsGuessed
-    let newCharsGuessed = new Set(charsGuessed);
-    //new Set(); charsGuessed.forEach(char => newCharsGuessed.add(char));
-    newCharsGuessed.add(guessedChar);
-    setCharsGuessed(newCharsGuessed);
+    // update guess map
+    const m = new Map(guessesMade);
+    m.set(guessedChar, guessWasCorrect);
+    setGuessesMade(m);
+
+    // // add guessedChar to charsGuessed
+    // let newCharsGuessed = new Set(charsGuessed);
+    // //new Set(); charsGuessed.forEach(char => newCharsGuessed.add(char));
+    // newCharsGuessed.add(guessedChar);
+    // setCharsGuessed(newCharsGuessed);
   }
 
   function newGameButtonClicked() {
@@ -85,17 +96,17 @@ function App() {
     <div className="App">
       <PhraseDisplay answer={gameAnswer} unrevealedLetters={unrevealedLetters} isSpecialChar={isSpecialChar} isGameFinished={!gameInProgress}/>
       <div>
-        <h2>Guessed Letters:</h2>
+        {/* <h2>Guessed Letters:</h2>
         <div className="guessed-letters">
-          {new Array(charsGuessed).map((letter) => {
+          {new Array(guessesMade.keys()).map((letter) => {
             return(<div className="guessed-letter">{letter}</div>);
           })}
-        </div>
+        </div> */}
         <div>
           Penalties: {penalties}
         </div>
         {gameInProgress ? 
-        (<LetterInput isValidLetter={isLetter} guessedLetters={charsGuessed} onGuessSubmitted={onGuessSubmitted}/>)
+        (<LetterInput isValidLetter={isLetter} guessesMade={guessesMade} onGuessSubmitted={onGuessSubmitted}/>)
         :
         (<button onClick={newGameButtonClicked}>New Game</button>)}
       </div>
