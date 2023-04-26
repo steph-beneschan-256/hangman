@@ -17,18 +17,34 @@ function isSpecialChar(char) {
 
 
 function App() {
-  const gameAnswer = "giant anteater".toUpperCase(); //hardcoding value for testing purposes
-  const [unrevealedLetters, setUnrevealedLetters] = useState(new Set(new Array(...gameAnswer).filter(char => !isSpecialChar(char))));
+
+  const [gameInProgress, setGameInProgress] = useState(false);
+
+  const [gameAnswer, setGameAnswer] = useState(""); //hardcoding value for testing purposes
+  const [unrevealedLetters, setUnrevealedLetters] = useState(new Set());
     
-  // charsGuessed: All characters/letters that the user has already guessed, whether or not they are part of the solution phrase
+  // All characters/letters that the user has already guessed, whether or not they are part of the solution phrase
   const [charsGuessed, setCharsGuessed] = useState(new Set());
+  // How many incorrect letters the user has guessed
+  const [penalties, setPenalties] = useState(0);
   
-  const [penalties, setPenalties] = useState(0); //placeholder penalty counter
+  // How many penalties the player can make before losing the game (TODO: find reasonable number)
+  const maxPenalties = 5;
 
     /*
     what's the most efficient way to store the user's progress?
     maybe make some sort of index map with the letters in the answer?
     */
+
+    function newGame(newAnswer) {
+      const answer = newAnswer.toUpperCase();
+      setGameAnswer(answer);
+      setUnrevealedLetters(new Set(new Array(...answer).filter(char => !isSpecialChar(char))));
+      setCharsGuessed(new Set());
+      setPenalties(0);
+
+      setGameInProgress(true);
+    }
 
   function onGuessSubmitted(guessedChar) {
     if(unrevealedLetters.has(guessedChar)) {
@@ -39,11 +55,17 @@ function App() {
       // Check if the user has won the game, i.e. no more letters need to be revealed 
       if(newSet.size <= 0) {
         console.log("--- You won! ---");
+        setGameInProgress(false); // the game has concluded
       }
     }
     else {
       //inflict penalty
-      setPenalties(penalties + 1);
+      const p = penalties + 1;
+      setPenalties(p);
+      if(p > maxPenalties) {
+        console.log("--- Try Again ---");
+        setGameInProgress(false);
+      }
       // TODO: check whether the user has lost the game
     }
 
@@ -54,9 +76,14 @@ function App() {
     setCharsGuessed(newCharsGuessed);
   }
 
+  function newGameButtonClicked() {
+    const newAnswer = "giant anteater"; //for now, hardcode the value
+    newGame(newAnswer);
+  }
+
   return (
     <div className="App">
-      <PhraseDisplay answer={gameAnswer} unrevealedLetters={unrevealedLetters} isSpecialChar={isSpecialChar}/>
+      <PhraseDisplay answer={gameAnswer} unrevealedLetters={unrevealedLetters} isSpecialChar={isSpecialChar} isGameFinished={!gameInProgress}/>
       <div>
         <h2>Guessed Letters:</h2>
         <div className="guessed-letters">
@@ -67,7 +94,10 @@ function App() {
         <div>
           Penalties: {penalties}
         </div>
-        <LetterInput isValidLetter={isLetter} guessedLetters={charsGuessed} onGuessSubmitted={onGuessSubmitted}/>
+        {gameInProgress ? 
+        (<LetterInput isValidLetter={isLetter} guessedLetters={charsGuessed} onGuessSubmitted={onGuessSubmitted}/>)
+        :
+        (<button onClick={newGameButtonClicked}>New Game</button>)}
       </div>
     </div>
       
