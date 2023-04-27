@@ -7,6 +7,7 @@
 */
 
 export default function PhraseDisplay({answer, unrevealedLetters, isSpecialChar}) {
+    console.log('in phrase display with the gameanswer: ' + answer);
     return(
         <div>
             {new Array(...answer).map((char) => {
