@@ -19,7 +19,7 @@ export default function PhraseDisplay({answer, unrevealedLetters, isSpecialChar,
     }
     
     return(
-        <div>
+        <div className="phrase-display">
             {getWords(answer).map((word) => (
                 //
                 <div className="word">

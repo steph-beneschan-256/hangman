@@ -3,8 +3,11 @@ import './App.css';
 import LetterInput from './LetterInput';
 import { useState } from 'react';
 import PhraseDisplay from './PhraseDisplay';
+import PenaltyCounter from './PenaltyCounter';
 
-const dataEndpoint = "https://lighthall-task-app.onrender.com";
+
+
+const dataEndpoint = "https://lighthall-challenge-3.onrender.com";
 
 /*
 Return a boolean indicating whether the character is a letter
@@ -28,7 +31,7 @@ function App() {
   const [penalties, setPenalties] = useState(0);
   // Store each character that the user has guessed, mapping it to a boolean indicating whether the guess was correct
   const [guessesMade, setGuessesMade] = useState(new Map());
-  
+
   // How many penalties the player can make before losing the game (TODO: find reasonable number)
   const maxPenalties = 5;
 
@@ -119,7 +122,15 @@ function App() {
 
   return (
     <div className="App">
-      <PhraseDisplay answer={gameAnswer} unrevealedLetters={unrevealedLetters} isSpecialChar={isSpecialChar} isGameFinished={!gameInProgress}/>
+      {gameAnswer &&
+      (
+        <>
+          <PhraseDisplay answer={gameAnswer} unrevealedLetters={unrevealedLetters}
+          isSpecialChar={isSpecialChar} isGameFinished={!gameInProgress}/>
+          <PenaltyCounter penalties={penalties}/>
+        </>
+      )}
+
       <div>
         {/* <h2>Guessed Letters:</h2>
         <div className="guessed-letters">
@@ -130,8 +141,14 @@ function App() {
         <div>
           Penalties: {penalties}
         </div>
+        <div>
+
+        </div>
         {gameInProgress ? 
-        (<LetterInput isValidLetter={isLetter} guessesMade={guessesMade} onGuessSubmitted={onGuessSubmitted}/>)
+        (<>
+          <LetterInput isValidLetter={isLetter} guessesMade={guessesMade}
+          onGuessSubmitted={onGuessSubmitted}/>
+        </>)
         :
         (<button onClick={newGameButtonClicked}>New Game</button>)}
       </div>

@@ -142,6 +142,11 @@
 
 /* --- For PhraseDisplay Component --- */
 
+.phrase-display {
+  width: 74%;
+  display: inline-block;
+}
+
 .guessed-letters {
   background-color: white;
   color: black;
@@ -155,13 +160,14 @@
 }
 
 .word {
+  width: auto;
   margin: 1vw;
   display: inline-block;
 }
 
 .char-tile {
   min-width: 50px;
-  width: 5vw;
+  width: 10%;
   min-height: 75px;
   height: 7.5vw;
   text-align: center;
@@ -178,4 +184,17 @@
 
 .game-lost {
   color: red;
+}
+
+/* --- For PenaltyCounter Component --- */
+
+.penalty-counter {
+  width: 24%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.penalty-counter img {
+  width: 100%;
+  object-fit: contain;
 }
