@@ -1,0 +1,56 @@
+.leaderboard {
+    width: 90%;
+    margin: 2.5%;
+    padding: 2.5%;
+    border-radius: 2.5vw;
+    border: 1px solid black;
+}
+
+.leaderboard-header {
+    width: 100%;
+    text-align: left;
+}
+
+.leaderboard-header div {
+    display: inline-block;
+}
+
+.leaderboard .data-row {
+    width: 98%;
+    padding: 1%;
+    text-align: left;
+    border-top: 1px solid black;
+    font-size: x-large;
+}
+
+.odd-row {
+    background-color: #dddddd;
+}
+
+.even-row {
+    background-color: #cccccc;
+}
+
+.leaderboard .data-row div{
+    display: inline-block;
+}
+
+.current-user {
+    background-color: beige;
+}
+
+.leaderboard .rank {
+    width: 10%;
+}
+.leaderboard .name {
+    width: 70%;
+}
+.leaderboard .score {
+    width: 20%;
+}
+
+.leaderboard img {
+    width: 0.8em;
+    padding: 0.1em;
+}
+
