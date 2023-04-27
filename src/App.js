@@ -116,7 +116,7 @@ function App() {
 
   return (
     <div className="App">
-      <ShareLink />
+      <ShareLink dataEndpoint={userDataEndpoint}/>
       <PhraseDisplay answer={gameAnswer} unrevealedLetters={unrevealedLetters} isSpecialChar={isSpecialChar}/>
       <div>
         <h2>Guessed Letters:</h2>

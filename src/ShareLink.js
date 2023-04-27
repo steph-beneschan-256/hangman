@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import './shareLink.css';
 
-export default function ShareLink () {
+export default function ShareLink ({ dataEndpoint }) {
   //this UI component encompasses all functionality related to creating a new word
 
+  const appLink = 'localhost:3000'; //this needs to be updated when hosting occurs
   const toggleDefaultMessage = 'Create a game for a friend';
   const [link, setLink] = useState('');
   const [warning, setWarning] = useState('');
@@ -83,10 +84,34 @@ export default function ShareLink () {
     }
     //no warning, submit POST to API endpoint
 
-    //upon success, set the link
-    setLink('sample link');
-    setLinkDisplay('visible');
-
+    fetch(`${dataEndpoint}/word`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Connection: "keep-alive",
+      },
+      body: JSON.stringify({
+        word: {
+          word: userWord,
+          hint: userHint,
+          userId: ''
+        },
+      }),
+    }).then((response) => {
+      if (response.status === 404) {
+        console.log('error in POST word request, 404 error')
+      }
+      response.json().then(a => {
+        console.log(a);
+        setLink(appLink+'/word/' + a.id);
+        setLinkDisplay('visible');
+      })
+      .catch((err) => {
+        console.log('error in obtaining Word from user link')
+        console.log(err);
+      })
+    });
   }
 
   const copyLink = () => {
