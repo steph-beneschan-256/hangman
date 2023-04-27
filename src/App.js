@@ -3,6 +3,7 @@ import './App.css';
 import LetterInput from './LetterInput';
 import { useState } from 'react';
 import PhraseDisplay from './PhraseDisplay';
+import ShareLink from './ShareLink';
 
 /*
 Return a boolean indicating whether the character is a letter
@@ -19,10 +20,10 @@ function isSpecialChar(char) {
 function App() {
   const gameAnswer = "giant anteater".toUpperCase(); //hardcoding value for testing purposes
   const [unrevealedLetters, setUnrevealedLetters] = useState(new Set(new Array(...gameAnswer).filter(char => !isSpecialChar(char))));
-    
+
   // charsGuessed: All characters/letters that the user has already guessed, whether or not they are part of the solution phrase
   const [charsGuessed, setCharsGuessed] = useState(new Set());
-  
+
   const [penalties, setPenalties] = useState(0); //placeholder penalty counter
 
     /*
@@ -36,7 +37,7 @@ function App() {
       let newSet = new Set(unrevealedLetters);
       newSet.delete(guessedChar);
       setUnrevealedLetters(newSet);
-      // Check if the user has won the game, i.e. no more letters need to be revealed 
+      // Check if the user has won the game, i.e. no more letters need to be revealed
       if(newSet.size <= 0) {
         console.log("--- You won! ---");
       }
@@ -56,6 +57,7 @@ function App() {
 
   return (
     <div className="App">
+      <ShareLink />
       <PhraseDisplay answer={gameAnswer} unrevealedLetters={unrevealedLetters} isSpecialChar={isSpecialChar}/>
       <div>
         <h2>Guessed Letters:</h2>
@@ -70,7 +72,7 @@ function App() {
         <LetterInput isValidLetter={isLetter} guessedLetters={charsGuessed} onGuessSubmitted={onGuessSubmitted}/>
       </div>
     </div>
-      
+
   );
 }
 

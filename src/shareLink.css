@@ -1,0 +1,67 @@
+.hidden {
+  display:none;
+}
+
+.visible {
+  display:block;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content:center;
+}
+
+.copy-image {
+  width:1rem;
+  height:1rem;
+  align-self:center;
+  margin-left:5px;
+}
+.shareLinkContainer {
+  background-color:beige;
+  box-sizing:border-box;
+  padding-bottom:10px;
+  padding-top:10px;
+}
+
+.createWordForm {
+  height: auto;
+}
+
+.link-container {
+  margin:auto;
+  max-width:300px;
+  margin-bottom:rem;
+}
+.link-display {
+  background-color:white;
+  padding:5px;
+  width:auto;
+}
+/* ------- styling for the 'generate Link' button -------- */
+.submitButton {
+  margin:auto;
+  border-radius:10%;
+}
+/* initial state is inactive */
+.inactive {
+  background-color:grey;
+  color:darkgray;
+}
+
+.inactive:hover{
+  cursor:default;
+}
+
+/* turns to active when able to generate a link */
+.active {
+  background-color:blue;
+  color:white;
+}
+
+.active:hover {
+  cursor:pointer;
+}
