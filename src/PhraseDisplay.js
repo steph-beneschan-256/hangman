@@ -1,3 +1,4 @@
+import { gameStates } from "./GameStates";
 import "./phraseDisplay.css";
 
 /*
@@ -7,7 +8,7 @@ import "./phraseDisplay.css";
     * Letters that the user has already guessed
 */
 
-export default function PhraseDisplay({answer, unrevealedLetters, isSpecialChar, isGameFinished}) {
+export default function PhraseDisplay({answer, unrevealedLetters, isSpecialChar, gameStatus}) {
     console.log('in phrase display with the gameanswer: ' + answer);
 
     function getWords(str) {
@@ -37,13 +38,18 @@ export default function PhraseDisplay({answer, unrevealedLetters, isSpecialChar,
                 <div className="word">
                     {
                     new Array(...word).map((char) => {
+                        let classes = "char-tile";
+                        if(!isSpecialChar(char)) {
+                            classes += " letter-tile";
+                            if(gameStatus === gameStates.won)
+                                classes += " game-won";
+                            else if((gameStatus === gameStates.lost) && unrevealedLetters.has(char))
+                                classes += " game-lost";
+                        }
 
-                        const secondaryClass = isSpecialChar(char) ? "" : "letter-tile";
-                        const tertiaryClass = (isGameFinished && unrevealedLetters.has(char)) ? "game-lost" : "";
                         return(
-                            <div className={`char-tile ${secondaryClass} ${tertiaryClass}`}
-                            style={{"width": ""}}>
-                                {unrevealedLetters.has(char) ? "": char}
+                            <div className={classes}>
+                                {((gameStatus === gameStates.inProgress) && unrevealedLetters.has(char)) ? "": char}
                             </div>
                         );
                     })

@@ -6,6 +6,7 @@ import PhraseDisplay from './PhraseDisplay';
 import ShareLink from './ShareLink';
 import PenaltyCounter from './PenaltyCounter';
 import Leaderboard from './Leaderboard';
+import { gameStates } from './GameStates';
 
 /*
 Return a boolean indicating whether the character is a letter
@@ -17,15 +18,6 @@ function isLetter(char) {
 function isSpecialChar(char) {
   return !isLetter(char);
 }
-
-const gameStates = {
-  "notStarted": 0,
-  "inProgress": 1,
-  "won": 2,
-  "lost": 3,
-  "loading": 4
-}
-
 
 function App() {
   var customWord = false;
@@ -202,6 +194,7 @@ function App() {
 
   function gameLost() {
     console.log("--- Try Again ---");
+    
     //TODO: update leaderboard?
   }
 
@@ -216,7 +209,7 @@ function App() {
       (
         <div className={"game-status-display"}>
           <PhraseDisplay answer={gameAnswer} unrevealedLetters={unrevealedLetters}
-          isSpecialChar={isSpecialChar} isGameFinished={(gameStatus !== gameStates.inProgress)}/>
+          isSpecialChar={isSpecialChar} gameStatus={gameStatus}/>
           <h3>Hint: {hint}</h3>
           <PenaltyCounter penalties={penalties} maxPenalties={maxPenalties}/>
         </div>
