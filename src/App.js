@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import PhraseDisplay from './PhraseDisplay';
 import ShareLink from './ShareLink';
 import PenaltyCounter from './PenaltyCounter';
+import Leaderboard from './Leaderboard';
 
 /*
 Return a boolean indicating whether the character is a letter
@@ -34,8 +35,11 @@ function App() {
   var userId = 'bc17195a-593e-4f6f-9457-7361566c4425' //example for testing purposes, we need UI that allows users to sign in or create new
 
   const customWordLoaded = useRef(false);
+  const leaderboardLoaded = useRef(false);
 
   const [gameStatus, setGameStatus] = useState(gameStates.notStarted);
+
+  const [leaderboardData, setLeaderboardData] = useState([]);
 
   useEffect(()=> {
     //load the game answer
@@ -63,6 +67,23 @@ function App() {
         .catch((err) => {
           console.log('error in obtaining Word from user link')
           console.log(err);
+        })
+      })
+    }
+
+    if(!leaderboardLoaded.current) {
+      fetch(`${userDataEndpoint}/leaderboard`, {
+        method: "GET",
+        headers: {
+          "Accept": "application/json; charset=utf-8",
+          "Content-Type": "application/json; charset=utf-8"
+        }
+      }).then((response) => {
+        if(response.status === 404)
+          console.log("404 error");
+        response.json().then(leaderboardData => {
+          setLeaderboardData(leaderboardData);
+          leaderboardLoaded.current = true; 
         })
       })
     }
@@ -121,6 +142,8 @@ function App() {
         console.log('error in incrementing score, 500 error')
       }
       response.json().then(a => {
+        //reload leaderboard
+        leaderboardLoaded.current = false;
       })
       .catch((err) => {
         console.log('error in incrementing score')
@@ -208,6 +231,8 @@ function App() {
         :
         (<button onClick={newGameButtonClicked}>New Game</button>)}
       </div>
+
+      {leaderboardLoaded && <Leaderboard leaderboardData={leaderboardData} currentUserID={userId}/>}
     </div>
 
   );
