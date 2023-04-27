@@ -2,10 +2,9 @@ import { useState } from "react";
 
 /*
 Notes:
-    * The idea is to create a text input element so that when the user wants to guess a letter, they can select the input element and type in the desired letter using their keyboard. I thought that this would be preferable to creating an on-screen keyboard (similar to Wordle's interface) because:
-        - Mobile users can use their existing keyboard
-        - It would be (at least theoretically) easier to add support for other languages
-        - The component should take up less screen space
+    * I originally thought that it would be better to use a text input element rather than an on-screen keyboard, mainly because I thought that it would be easier to support additional languages.
+    I now think that it might be better to create a different on-screen keyboard according to the user's device language
+    (of course, I assume that for the challenge we only need to support English)
 */
 
 /*
@@ -16,83 +15,107 @@ function defaultLetterIsValid(letter) {
     return p.test(letter);
 }
 
+/*
+Header that appears at the top of the LetterInput component; shows the currently selected letter and a "submit guess" button
+*/
+function HeaderBar({selectedLetter, onSubmit}) {
+
+    return(
+        <div className="letter-input-header">
+            <div className="header-a">
+                Choose a letter to guess:
+            </div>
+            <div className="header-b">
+                {selectedLetter}
+            </div>
+            <div className="header-c">
+                {selectedLetter &&
+                <button onClick={onSubmit}>
+                    Submit Guess
+                </button>
+                }
+            </div>
+        </div>
+    )
+}
+
+/*
+On-screen keyboard, similar to the one seen in the game Wordle
+Letters are highlighted depending on whether they were already guessed and, if so, whether the guess was correct
+
+*/
+function KeyBoard({onLetterSelected, guessesMade}) {
+    const keyboardRows = ["QWERTYIOP", "ASDFGHJKL", "ZXCVBNM"];
+
+    function getSecondaryClass(letter) {
+        if(guessesMade.has(letter))
+            return guessesMade.get(letter) ? "correct-letter" : "incorrect-letter";
+        return "";
+    } 
+    return(
+        <div>
+            {keyboardRows.map(row => (
+                <div className="keyboard-row">
+                    {new Array(...row).map(letter => (
+                        <button className={`keyboard-tile ${getSecondaryClass(letter)}`} 
+                        disabled={guessesMade.has(letter)}
+                        onClick={() => onLetterSelected(letter)}>
+                            {letter}
+                        </button>
+                    ))}
+                </div>
+            ))}
+        </div>
+    )
+}
 
 /*
 Props:
     * letterIsValid: function taking a single letter/character as input; returns boolean depending on whether the letter is valid (i.e. whether the user is able to guess that letter); has nothing to do with whether the letter is correct/part of the answer
         * (Would it be better to just use a RegEx pattern?)
-    * guessedLetters: list of letters/characters that have already been guessed
+    * guessesMade: a Map object, mapping each letter that the user has guessed to a boolean indicating whether the guess was correct
     * onGuessSubmitted: function to be called when the user has submitted a guess
 */
 
-export default function LetterInput({isValidLetter=defaultLetterIsValid, guessedLetters, onGuessSubmitted}) {
-    const [inputLetter, setInputLetter] = useState('');
-    const [canGuessLetter, setCanGuessLetter] = useState(false); // Whether the currently-input letter can be guessed
+export default function LetterInput({isValidLetter=defaultLetterIsValid, guessesMade, onGuessSubmitted}) {
+    const [selectedLetter, setSelectedLetter] = useState('');
     const [errorMsg, setErrorMsg] = useState("");
 
-    function submitGuess(guess=inputLetter) {
-        if(canGuessLetter) {
-            setInputLetter(''); //reset input letter in box
-            setCanGuessLetter(false);
-            onGuessSubmitted(guess);
-            console.log(`Guessed ${guess}`);
-        }   
+    function submitGuess() {
+        if(isValidLetter(selectedLetter)) {        
+            onGuessSubmitted(selectedLetter);
+            console.log(`Guessed ${selectedLetter}`);
+            setSelectedLetter(''); //reset input letter in box
+        }
+    }
+
+    function keyPressed(keyEvent) {
+        keyEvent.preventDefault();
+        const key = keyEvent.key.toUpperCase();
+        switch(key) {
+            case "ENTER":
+                submitGuess();
+                break;
+            case "BACKSPACE":
+                setSelectedLetter('');
+                break;
+            default:
+                inputLetterChanged(key);
+                break;
+        }
     }
 
     function inputLetterChanged(newLetter) {
-        //
-        if(!newLetter) { // no letters entered
-            setErrorMsg("");
-            setCanGuessLetter(false);
-        }
-        else if(guessedLetters.has(newLetter)) {
-            //already guessed this letter
-            setErrorMsg("Already guessed that letter.");
-            setCanGuessLetter(false);
-        }   
-        else if(!isValidLetter(newLetter)) {
-            setErrorMsg("Invalid letter.");
-            setCanGuessLetter(false);
-        }
-        else {
-            setErrorMsg("");
-            setCanGuessLetter(true);
-        }
+        if(isValidLetter(newLetter))
+            setSelectedLetter(newLetter);
+        else
+            console.log(`Invalid letter entered: ${newLetter}`);
     }
 
     return(
-        <div className="letter-input">
-            <form onSubmit={(e) => {
-                e.preventDefault();
-                submitGuess()}}>
-            <label>
-                Guess a letter:
-                <input type="text" value={inputLetter} maxLength={1}
-                className="input-text"
-                onChange={(e) => {
-                    const newLetter = e.target.value.toUpperCase();
-                    console.log(newLetter);
-                    // If the new letter is whitespace, ignore it
-                    // Note: using \S causes the backspace key to be ignored
-                    if(!/\s/.test(newLetter)) {
-                        setInputLetter(newLetter);
-                        inputLetterChanged(newLetter);
-                    }
-                }}
-                />
-            </label>
-            <div>
-                <input type="submit" value="Submit Guess"
-                disabled={!canGuessLetter}
-                className="input-submit"/>
-            </div>
-            <div className="error-msg">
-                {errorMsg && (
-                    /* TODO: maybe add some kind of caution symbol*/
-                    <div>{errorMsg}</div>
-                )}
-            </div>
-            </form>
+        <div className="letter-input" onKeyDown={keyPressed}>
+            <HeaderBar selectedLetter={selectedLetter} onSubmit={submitGuess}/>
+            <KeyBoard onLetterSelected={inputLetterChanged} guessesMade={guessesMade}/>
         </div>
     )
 }
