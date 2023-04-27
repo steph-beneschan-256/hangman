@@ -219,12 +219,27 @@
   padding: 2%;
   display: inline-block;
   vertical-align: top;
+  position: relative;
 }
 
 .penalty-counter img {
   width: 100%;
   max-width: 20vh;
   object-fit: contain;
+}
+
+.penalty-counter span {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 60%;
+  left: 0;
+  top: 15%;
+  font-size: 4em;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  vertical-align: middle;
 }
 
 @media only screen and (max-width: 700px) {

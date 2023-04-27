@@ -127,7 +127,7 @@ function App() {
         <div className={"game-status-display"}>
           <PhraseDisplay answer={gameAnswer} unrevealedLetters={unrevealedLetters}
           isSpecialChar={isSpecialChar} isGameFinished={!gameInProgress}/>
-          <PenaltyCounter penalties={penalties}/>
+          <PenaltyCounter penalties={penalties} maxPenalties={maxPenalties}/>
         </div>
       )}
 
