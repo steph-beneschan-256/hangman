@@ -1,3 +1,13 @@
+# Hangman Game
+Submission for the third challenge of Lighthall's 2023 Software Engineering Super League
+
+# Team 34
+* Mauro
+* Steph Beneschan
+* Seij
+
+-----
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
