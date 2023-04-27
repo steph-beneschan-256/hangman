@@ -3,8 +3,8 @@ Submission for the third challenge of Lighthall's 2023 Software Engineering Supe
 
 # Team 34
 * Mauro
-* Steph Beneschan
 * Seij
+* Steph
 
 -----
 
