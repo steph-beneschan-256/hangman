@@ -4,6 +4,8 @@ import LetterInput from './LetterInput';
 import { useState } from 'react';
 import PhraseDisplay from './PhraseDisplay';
 
+const dataEndpoint = "https://lighthall-task-app.onrender.com";
+
 /*
 Return a boolean indicating whether the character is a letter
 */
@@ -22,12 +24,8 @@ function App() {
 
   const [gameAnswer, setGameAnswer] = useState(""); //hardcoding value for testing purposes
   const [unrevealedLetters, setUnrevealedLetters] = useState(new Set());
-    
-  // All characters/letters that the user has already guessed, whether or not they are part of the solution phrase
-  const [charsGuessed, setCharsGuessed] = useState(new Set());
   // How many incorrect letters the user has guessed
   const [penalties, setPenalties] = useState(0);
-
   // Store each character that the user has guessed, mapping it to a boolean indicating whether the guess was correct
   const [guessesMade, setGuessesMade] = useState(new Map());
   
@@ -43,7 +41,6 @@ function App() {
       const answer = newAnswer.toUpperCase();
       setGameAnswer(answer);
       setUnrevealedLetters(new Set(new Array(...answer).filter(char => !isSpecialChar(char))));
-      setCharsGuessed(new Set());
       setGuessesMade(new Map());
       setPenalties(0);
 
@@ -60,7 +57,7 @@ function App() {
       setUnrevealedLetters(newSet);
       // Check if the user has won the game, i.e. no more letters need to be revealed 
       if(newSet.size <= 0) {
-        console.log("--- You won! ---");
+        gameWon();
         setGameInProgress(false); // the game has concluded
       }
     }
@@ -68,23 +65,51 @@ function App() {
       //inflict penalty
       const p = penalties + 1;
       setPenalties(p);
+      // Check if user has lost the game
       if(p > maxPenalties) {
-        console.log("--- Try Again ---");
+        gameLost();
         setGameInProgress(false);
       }
-      // TODO: check whether the user has lost the game
     }
 
     // update guess map
     const m = new Map(guessesMade);
     m.set(guessedChar, guessWasCorrect);
     setGuessesMade(m);
+  }
 
-    // // add guessedChar to charsGuessed
-    // let newCharsGuessed = new Set(charsGuessed);
-    // //new Set(); charsGuessed.forEach(char => newCharsGuessed.add(char));
-    // newCharsGuessed.add(guessedChar);
-    // setCharsGuessed(newCharsGuessed);
+  function gameWon() {
+    console.log("--- You won! ---");
+    //TODO: send post request to backend
+    try {
+      fetch(`${dataEndpoint}/leaderboard`, {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          userId: "placeholder",
+          wordID: "placeholder"
+        })
+      }).then(
+        (response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+  catch (NetworkError) {
+    console.log("ow");
+  }
+
+  }
+
+  function gameLost() {
+    console.log("--- Try Again ---");
+    //TODO: update leaderboard?
   }
 
   function newGameButtonClicked() {

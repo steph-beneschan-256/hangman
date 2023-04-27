@@ -64,7 +64,7 @@
 .letter-input-header .header-a {
   width: 33%;
   font-size: 2vw;
-  text-align: left;
+  text-align: center;
 }
 .letter-input-header .header-b {
   width: 33%;
@@ -74,6 +74,29 @@
 .letter-input-header .header-c {
   width: 33%;
   text-align: right;
+}
+
+@media only screen and (max-width: 700px) {
+  .letter-input-header .header-a {
+    width: 50%;
+    text-align: center;
+  }
+  .letter-input-header .header-b {
+    width: 50%;
+    text-align: center;
+  }
+  .letter-input-header .header-c {
+    width: 100%;
+  }
+  
+}
+
+.letter-input-header .header-c button {
+  width: 100%;
+}
+
+.letter-input-header .header-c button:disabled {
+  width: 100%;
 }
 
 /* --- For LetterInput Keyboard component --- */
@@ -103,6 +126,8 @@
 
 .keyboard-tile:disabled {
   cursor: not-allowed;
+  width: 7.5%;
+  margin: 1.75%;
 }
 
 .keyboard-row .correct-letter {
@@ -129,15 +154,22 @@
   font-style: bold;
 }
 
+.word {
+  margin: 1vw;
+  display: inline-block;
+}
+
 .char-tile {
+  min-width: 50px;
   width: 5vw;
+  min-height: 75px;
   height: 7.5vw;
   text-align: center;
   padding-top: 1.25vw;
   padding-bottom: 1.25vw;
-  font-size: 5vw;
+  font-size: 3em;
   display: inline-block;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 .letter-tile {
