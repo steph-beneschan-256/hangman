@@ -17,6 +17,13 @@ function isSpecialChar(char) {
   return !isLetter(char);
 }
 
+const gameStates = {
+  "notStarted": 0,
+  "inProgress": 1,
+  "won": 2,
+  "lost": 3
+}
+
 
 function App() {
   var customWord = false;
@@ -24,6 +31,8 @@ function App() {
   const path = window.location.pathname;
   const userDataEndpoint = 'https://lighthall-challenge-3.onrender.com';
   var userId = 'bc17195a-593e-4f6f-9457-7361566c4425' //example for testing purposes, we need UI that allows users to sign in or create new
+
+  const [gameStatus, setGameStatus] = useState(gameStates.notStarted);
 
   useEffect(()=> {
     //load the game answer
@@ -80,8 +89,6 @@ function App() {
     }
   }, [])
 
-  const [gameInProgress, setGameInProgress] = useState(false);
-
   const [gameAnswer, setGameAnswer] = useState(""); //hardcoding value for testing purposes
   const [unrevealedLetters, setUnrevealedLetters] = useState(new Set());
   // How many incorrect letters the user has guessed
@@ -119,14 +126,14 @@ function App() {
     });
   }
 
-    function newGame(newAnswer) {
+    function newGame(newAnswer=gameAnswer) {
       const answer = newAnswer.toUpperCase();
       setGameAnswer(answer);
       setUnrevealedLetters(new Set(new Array(...answer).filter(char => !isSpecialChar(char))));
       setGuessesMade(new Map());
       setPenalties(0);
 
-      setGameInProgress(true);
+      setGameStatus(gameStates.inProgress);
     }
 
   function onGuessSubmitted(guessedChar) {
@@ -140,7 +147,7 @@ function App() {
       // Check if the user has won the game, i.e. no more letters need to be revealed
       if(newSet.size <= 0) {
         gameWon();
-        setGameInProgress(false); // the game has concluded
+        setGameStatus(gameStates.won); // the game has concluded
       }
     }
     else {
@@ -150,7 +157,7 @@ function App() {
       // Check if user has lost the game
       if(p > maxPenalties) {
         gameLost();
-        setGameInProgress(false);
+        setGameStatus(gameStates.lost);
       }
     }
 
@@ -171,24 +178,23 @@ function App() {
   }
 
   function newGameButtonClicked() {
-    const newAnswer = "giant anteater"; //for now, hardcode the value
-    newGame(newAnswer);
+    newGame();
   }
 
   return (
     <div className="App">
       <ShareLink dataEndpoint={userDataEndpoint}/>
-      {gameAnswer &&
+      {(gameStatus !== gameStates.notStarted) &&
       (
         <div className={"game-status-display"}>
           <PhraseDisplay answer={gameAnswer} unrevealedLetters={unrevealedLetters}
-          isSpecialChar={isSpecialChar} isGameFinished={!gameInProgress}/>
+          isSpecialChar={isSpecialChar} isGameFinished={(gameStatus !== gameStates.inProgress)}/>
           <PenaltyCounter penalties={penalties} maxPenalties={maxPenalties}/>
         </div>
       )}
 
       <div>
-        {gameInProgress ? 
+        {(gameStatus === gameStates.inProgress) ? 
         (<>
           <LetterInput isValidLetter={isLetter} guessesMade={guessesMade}
           onGuessSubmitted={onGuessSubmitted}/>
