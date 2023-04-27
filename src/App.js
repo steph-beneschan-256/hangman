@@ -3,11 +3,8 @@ import './App.css';
 import LetterInput from './LetterInput';
 import { useState } from 'react';
 import PhraseDisplay from './PhraseDisplay';
+import ShareLink from './ShareLink';
 import PenaltyCounter from './PenaltyCounter';
-
-
-
-const dataEndpoint = "https://lighthall-challenge-3.onrender.com";
 
 /*
 Return a boolean indicating whether the character is a letter
@@ -58,7 +55,7 @@ function App() {
       let newSet = new Set(unrevealedLetters);
       newSet.delete(guessedChar);
       setUnrevealedLetters(newSet);
-      // Check if the user has won the game, i.e. no more letters need to be revealed 
+      // Check if the user has won the game, i.e. no more letters need to be revealed
       if(newSet.size <= 0) {
         gameWon();
         setGameInProgress(false); // the game has concluded
@@ -122,6 +119,7 @@ function App() {
 
   return (
     <div className="App">
+      <ShareLink />
       {gameAnswer &&
       (
         <div className={"game-status-display"}>
@@ -141,7 +139,7 @@ function App() {
         (<button onClick={newGameButtonClicked}>New Game</button>)}
       </div>
     </div>
-      
+
   );
 }
 
