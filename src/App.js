@@ -124,11 +124,11 @@ function App() {
     <div className="App">
       {gameAnswer &&
       (
-        <>
+        <div className={"game-status-display"}>
           <PhraseDisplay answer={gameAnswer} unrevealedLetters={unrevealedLetters}
           isSpecialChar={isSpecialChar} isGameFinished={!gameInProgress}/>
           <PenaltyCounter penalties={penalties}/>
-        </>
+        </div>
       )}
 
       <div>
