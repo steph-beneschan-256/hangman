@@ -45,7 +45,7 @@ Letters are highlighted depending on whether they were already guessed and, if s
 
 */
 function KeyBoard({onLetterSelected, guessesMade}) {
-    const keyboardRows = ["QWERTYIOP", "ASDFGHJKL", "ZXCVBNM"];
+    const keyboardRows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
 
     function getSecondaryClass(letter) {
         if(guessesMade.has(letter))

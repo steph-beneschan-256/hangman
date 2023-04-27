@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import LetterInput from './LetterInput';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PhraseDisplay from './PhraseDisplay';
 import ShareLink from './ShareLink';
 import PenaltyCounter from './PenaltyCounter';
@@ -21,7 +21,8 @@ const gameStates = {
   "notStarted": 0,
   "inProgress": 1,
   "won": 2,
-  "lost": 3
+  "lost": 3,
+  "loading": 4
 }
 
 
@@ -32,14 +33,17 @@ function App() {
   const userDataEndpoint = 'https://lighthall-challenge-3.onrender.com';
   var userId = 'bc17195a-593e-4f6f-9457-7361566c4425' //example for testing purposes, we need UI that allows users to sign in or create new
 
+  const customWordLoaded = useRef(false);
+
   const [gameStatus, setGameStatus] = useState(gameStates.notStarted);
 
   useEffect(()=> {
     //load the game answer
     //check if the current URL contains an ID for a pre-made word
-    if (path.includes('/word')) {
+    if ((!customWordLoaded.current) && path.includes('/word')) {
       //GET request to endpoint, on success set the word for gameAnswer
-      customWord = true;
+      customWordLoaded.current = true;
+      setGameStatus(gameStates.loading);
       fetch(userDataEndpoint + path, {
         method: "GET",
         headers: {
@@ -54,42 +58,18 @@ function App() {
           console.log(a);
           setGameAnswer(a.word);
           gameHint = a.hint;
+          newGame(a);
         })
         .catch((err) => {
           console.log('error in obtaining Word from user link')
           console.log(err);
         })
       })
-    } else {
-        const defaultValues = [
-          {word: 'hairy rabbit', hint:'animal'},
-          {word: 'grey fox', hint:'animal'},
-          {word: 'big whale', hint:'animal'},
-          {word: 'orange goldfish', hint:'animal'},
-          {word: 'bald eagle', hint:'animal'},
-          {word: 'buttered toast', hint:'food'},
-          {word: 'bag of fries', hint:'food'},
-          {word: 'chocolate cake', hint:'food'},
-          {word: 'three spoiled apples', hint:'food'},
-          {word: 'seedless watermelon', hint:'food'},
-          {word: 'kayaking through waterfall', hint:'sport'},
-          {word: 'football', hint:'sport'},
-          {word: 'underwater basket weaving', hint:'sport'},
-          {word: 'major league baseball', hint:'sport'},
-          {word: 'minor leage basketball', hint:'sport'},
-          {word: 'the matrix', hint:'movie'},
-          {word: 'the last of the mohicans', hint:'movie'},
-          {word: 'goodfellas', hint:'movie'},
-          {word: 'star wars', hint:'movie'},
-          {word: 'john wick', hint:'movie'}
-        ];
-        //use default word and hint if URL does not specify custom made word
-        var randomInt = Math.floor(Math.random() * defaultValues.length);
-        setGameAnswer(defaultValues[randomInt].word.toUpperCase());
     }
   }, [])
 
-  const [gameAnswer, setGameAnswer] = useState(""); //hardcoding value for testing purposes
+  const [gameAnswer, setGameAnswer] = useState("");
+  const [hint, setHint] = useState("");
   const [unrevealedLetters, setUnrevealedLetters] = useState(new Set());
   // How many incorrect letters the user has guessed
   const [penalties, setPenalties] = useState(0);
@@ -99,10 +79,33 @@ function App() {
   // How many penalties the player can make before losing the game (TODO: find reasonable number)
   const maxPenalties = 5;
 
-    /*
-    what's the most efficient way to store the user's progress?
-    maybe make some sort of index map with the letters in the answer?
-    */
+  function getRandomWord() {
+    const defaultValues = [
+      {word: 'hairy rabbit', hint:'animal'},
+      {word: 'grey fox', hint:'animal'},
+      {word: 'big whale', hint:'animal'},
+      {word: 'orange goldfish', hint:'animal'},
+      {word: 'bald eagle', hint:'animal'},
+      {word: 'buttered toast', hint:'food'},
+      {word: 'bag of fries', hint:'food'},
+      {word: 'chocolate cake', hint:'food'},
+      {word: 'three spoiled apples', hint:'food'},
+      {word: 'seedless watermelon', hint:'food'},
+      {word: 'kayaking through waterfall', hint:'sport'},
+      {word: 'football', hint:'sport'},
+      {word: 'underwater basket weaving', hint:'sport'},
+      {word: 'major league baseball', hint:'sport'},
+      {word: 'minor leage basketball', hint:'sport'},
+      {word: 'the matrix', hint:'movie'},
+      {word: 'the last of the mohicans', hint:'movie'},
+      {word: 'goodfellas', hint:'movie'},
+      {word: 'star wars', hint:'movie'},
+      {word: 'john wick', hint:'movie'}
+    ];
+    //use default word and hint if URL does not specify custom made word
+    var randomInt = Math.floor(Math.random() * defaultValues.length);
+    return defaultValues[randomInt];
+  }
 
   function incrementScore() {
     //make post request with userID
@@ -126,15 +129,17 @@ function App() {
     });
   }
 
-    function newGame(newAnswer=gameAnswer) {
-      const answer = newAnswer.toUpperCase();
-      setGameAnswer(answer);
-      setUnrevealedLetters(new Set(new Array(...answer).filter(char => !isSpecialChar(char))));
-      setGuessesMade(new Map());
-      setPenalties(0);
+  function newGame(wordData) {
+    console.log(wordData);
+    const answer = wordData.word.toUpperCase();
+    setGameAnswer(answer);
+    setHint(wordData.hint);
+    setUnrevealedLetters(new Set(new Array(...answer).filter(char => !isSpecialChar(char))));
+    setGuessesMade(new Map());
+    setPenalties(0);
 
-      setGameStatus(gameStates.inProgress);
-    }
+    setGameStatus(gameStates.inProgress);
+  }
 
   function onGuessSubmitted(guessedChar) {
     const guessWasCorrect = unrevealedLetters.has(guessedChar);
@@ -178,7 +183,7 @@ function App() {
   }
 
   function newGameButtonClicked() {
-    newGame();
+    newGame(getRandomWord());
   }
 
   return (
@@ -189,6 +194,7 @@ function App() {
         <div className={"game-status-display"}>
           <PhraseDisplay answer={gameAnswer} unrevealedLetters={unrevealedLetters}
           isSpecialChar={isSpecialChar} isGameFinished={(gameStatus !== gameStates.inProgress)}/>
+          <h3>Hint: {hint}</h3>
           <PenaltyCounter penalties={penalties} maxPenalties={maxPenalties}/>
         </div>
       )}
