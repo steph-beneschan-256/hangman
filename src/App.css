@@ -133,6 +133,8 @@
   color: white;
   text-align: center;
   vertical-align: middle;
+  transition: background-color 0.25s;
+  
 }
 
 .keyboard-tile:hover {
@@ -244,20 +246,6 @@
 .penalty-counter .chance-counter {
   font-weight: bold;
 }
-
-/* .penalty-counter span {
-  position: absolute;
-  display: flex;
-  width: 100%;
-  height: 60%;
-  left: 0;
-  top: 15%;
-  font-size: 4em;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  vertical-align: middle;
-} */
 
 @media only screen and (max-width: 700px) {
   .penalty-counter {
