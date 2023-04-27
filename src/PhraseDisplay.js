@@ -18,6 +18,16 @@ export default function PhraseDisplay({answer, unrevealedLetters, isSpecialChar,
         //if special chars. are present, append first one to end of first word
         // for now, hardcode spec. char. regex string
         return answer.split(/ |(?<=[A-Za-z][^A-Za-z]+)\b/);
+
+
+        //TODO: 
+        //const maxWordLen = words.length;
+        //const 
+
+        /*
+        all letter tiles should be the same size
+        each word needs to fit on one line
+        */
     }
     
     return(
@@ -27,21 +37,15 @@ export default function PhraseDisplay({answer, unrevealedLetters, isSpecialChar,
                 <div className="word">
                     {
                     new Array(...word).map((char) => {
-                        if(isSpecialChar(char)) {
-                            return (<div className="char-tile">{char}</div>);
-                        }
-                        if(isGameFinished) {
-                            return(
-                                <div className={"char-tile letter-tile " + (unrevealedLetters.has(char) ? "game-lost" : "")}>
-                                    {char}
-                                </div>
-                            )
-                        }
+
+                        const secondaryClass = isSpecialChar(char) ? "" : "letter-tile";
+                        const tertiaryClass = (isGameFinished && unrevealedLetters.has(char)) ? "game-lost" : "";
                         return(
-                            <div className={"char-tile letter-tile"}>
-                                {unrevealedLetters.has(char) ? "" : char}
+                            <div className={`char-tile ${secondaryClass} ${tertiaryClass}`}
+                            style={{"width": ""}}>
+                                {unrevealedLetters.has(char) ? "": char}
                             </div>
-                        )
+                        );
                     })
                     }
                 </div>
