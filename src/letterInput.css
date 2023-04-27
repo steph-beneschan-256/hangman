@@ -1,0 +1,149 @@
+/* --- For LetterInput component --- */
+.letter-input {
+    text-align: center;
+    border: solid 1px black;
+    border-radius: 10px;
+    width: 92%;
+    bottom: 2%;
+    position: absolute;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: min(2%, 5px);
+    padding: 2%;
+  }
+  
+  .letter-input h3 {
+    display: inline-block;
+  }
+  
+  .letter-input .input-text {
+    min-width: 100px;
+    width: 10vw;
+    max-width: 100px;
+    min-height: 100px;
+    height: 10vw;
+    max-height: 100px;
+    aspect-ratio: 1;
+    font-size: x-large;
+    border: none;
+    border-radius: 20px;
+    background-color: rgb(156, 193, 223);
+    text-align: center;
+    margin: 4vw;
+    display: inline-block;
+  }
+  
+  .letter-input .input-submit {
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    height: 10vw;
+    max-height: 50px;
+    cursor: pointer;
+  }
+  
+  .letter-input .input-submit:disabled {
+    background-color: lightgray;
+    color: gray;
+    cursor: not-allowed;
+  }
+  
+  .error-msg {
+    width: 100%;
+    height: 5vw;
+    max-height: 50px;
+    text-align: center;
+  }
+  
+  .letter-input-header div {
+    display: inline-block;
+    vertical-align: middle;
+    padding-bottom: 2%;
+  }
+  
+  .letter-input-header .header-a {
+    width: 33%;
+    height: 100%;
+    font-size: min(4vw,24px);
+    text-align: center;
+  }
+  .letter-input-header .header-b {
+    width: 33%;
+    font-size: 3vw;
+    text-align: center;
+  }
+  .letter-input-header .header-c {
+    width: 33%;
+    text-align: right;
+  }
+  
+  @media only screen and (max-width: 700px) {
+    .letter-input-header .header-a {
+      width: 50%;
+      text-align: center;
+    }
+    .letter-input-header .header-b {
+      width: 50%;
+      text-align: center;
+    }
+    .letter-input-header .header-c {
+      width: 100%;
+    }
+    
+  }
+  
+  .letter-input-header .header-c button {
+    width: 100%;
+  }
+  
+  .letter-input-header .header-c button:disabled {
+    width: 100%;
+  }
+  
+  /* --- For LetterInput Keyboard component --- */
+  
+  .keyboard-row {
+    width: 100%;
+    font-size: large;
+  }
+  
+  .keyboard-tile {
+    width: 8%;
+    max-width: 50px;
+    margin: min(0.5%, 5px);
+    aspect-ratio: 1;
+    font-size: min(5vw, 25px);
+    background-color: darkslategray;
+    border: none;
+    border-radius: 5%;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    transition: background-color 0.25s;
+    
+  }
+  
+  .keyboard-tile:hover {
+    cursor: pointer;
+    background-color: gray;
+  }
+  
+  .keyboard-tile:disabled {
+    cursor: not-allowed;
+    width: 7.5%;
+    max-width: 75px;
+    font-size: min(3.75vw, 37.5px);
+    margin: min(1.75%, 17.5px);
+  }
+  
+  .keyboard-row .correct-letter {
+    background-color: hsl(100, 50%, 50%);
+    color: hsl(100, 25%, 25%);
+  }
+  
+  .keyboard-row .incorrect-letter {
+    background-color: hsl(0, 50%, 65%);
+    color: hsl(0, 25%, 25%);
+  }
