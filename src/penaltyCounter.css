@@ -1,0 +1,35 @@
+/* --- For PenaltyCounter Component --- */
+
+.penalty-counter {
+    width: 20%;
+    display: inline-block;
+    text-align: center;
+    vertical-align: top;
+  }
+  
+  .penalty-counter .img-container {
+    height: 20vw;
+    max-height: 200px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .penalty-counter img {
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .penalty-counter span {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .penalty-counter .chance-counter {
+    font-weight: bold;
+  }
+  
+  @media only screen and (max-width: 700px) {
+    .penalty-counter {
+      width: 30%;
+    }
+  }

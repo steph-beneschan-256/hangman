@@ -1,4 +1,4 @@
-
+import "./penaltyCounter.css";
 
 export default function PenaltyCounter({penalties, maxPenalties}) {
     return(

@@ -132,10 +132,10 @@
   
   .keyboard-tile:disabled {
     cursor: not-allowed;
-    width: 7.5%;
+    /* width: 7.5%;
     max-width: 75px;
     font-size: min(3.75vw, 37.5px);
-    margin: min(1.75%, 17.5px);
+    margin: min(1.75%, 17.5px); */
   }
   
   .keyboard-row .correct-letter {
