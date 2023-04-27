@@ -132,18 +132,6 @@ function App() {
       )}
 
       <div>
-        {/* <h2>Guessed Letters:</h2>
-        <div className="guessed-letters">
-          {new Array(guessesMade.keys()).map((letter) => {
-            return(<div className="guessed-letter">{letter}</div>);
-          })}
-        </div> */}
-        <div>
-          Penalties: {penalties}
-        </div>
-        <div>
-
-        </div>
         {gameInProgress ? 
         (<>
           <LetterInput isValidLetter={isLetter} guessesMade={guessesMade}
