@@ -1,3 +1,4 @@
+import "./phraseDisplay.css";
 
 /*
     We can think of three kinds of characters in the answer phrase:

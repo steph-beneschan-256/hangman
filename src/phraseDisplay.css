@@ -1,0 +1,54 @@
+/* --- For PhraseDisplay Component --- */
+
+.phrase-display {
+    width: 74%;
+    display: inline-block;
+  }
+  
+  @media only screen and (max-width: 700px) {
+    .phrase-display {
+      width: 100%;
+    }
+  }
+  
+  .guessed-letters {
+    background-color: white;
+    color: black;
+  }
+  
+  .guessed-letter {
+    display: inline-block;
+    margin: 1vw;
+    font-weight: bold;
+    font-style: bold;
+  }
+  
+  .word {
+    width: auto;
+    margin: 1vw;
+    display: inline-block;
+  }
+  
+  .char-tile {
+    min-width: 25px;
+    width: 10vw;
+    max-width: 50px;
+    min-height: 75px;
+    height: 7.5vw;
+    max-height: 3.75vw;
+    text-align: center;
+    padding-top: 1.25vw;
+    padding-bottom: 1.25vw;
+    font-size: 3em;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  .letter-tile {
+    border: solid 1px black;
+  }
+  
+  .game-lost {
+    color: red;
+  }
+  
