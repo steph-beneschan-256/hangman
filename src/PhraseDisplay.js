@@ -7,6 +7,7 @@
 */
 
 export default function PhraseDisplay({answer, unrevealedLetters, isSpecialChar, isGameFinished}) {
+    console.log('in phrase display with the gameanswer: ' + answer);
 
     function getWords(str) {
         /*

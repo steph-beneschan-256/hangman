@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import LetterInput from './LetterInput';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PhraseDisplay from './PhraseDisplay';
 import ShareLink from './ShareLink';
 import PenaltyCounter from './PenaltyCounter';
@@ -19,6 +19,66 @@ function isSpecialChar(char) {
 
 
 function App() {
+  var customWord = false;
+  var gameHint = '';
+  const path = window.location.pathname;
+  const userDataEndpoint = 'https://lighthall-challenge-3.onrender.com';
+  var userId = 'bc17195a-593e-4f6f-9457-7361566c4425' //example for testing purposes, we need UI that allows users to sign in or create new
+
+  useEffect(()=> {
+    //load the game answer
+    //check if the current URL contains an ID for a pre-made word
+    if (path.includes('/word')) {
+      //GET request to endpoint, on success set the word for gameAnswer
+      customWord = true;
+      fetch(userDataEndpoint + path, {
+        method: "GET",
+        headers: {
+          'Accept': 'application/json;charset=utf-8',
+          'Content-Type': 'application/json;charset=utf-8'
+      }
+      }).then((response) => {
+        if (response.status === 404) {
+          console.log('error in GET request, 404 error')
+        }
+        response.json().then(a => {
+          console.log(a);
+          setGameAnswer(a.word);
+          gameHint = a.hint;
+        })
+        .catch((err) => {
+          console.log('error in obtaining Word from user link')
+          console.log(err);
+        })
+      })
+    } else {
+        const defaultValues = [
+          {word: 'hairy rabbit', hint:'animal'},
+          {word: 'grey fox', hint:'animal'},
+          {word: 'big whale', hint:'animal'},
+          {word: 'orange goldfish', hint:'animal'},
+          {word: 'bald eagle', hint:'animal'},
+          {word: 'buttered toast', hint:'food'},
+          {word: 'bag of fries', hint:'food'},
+          {word: 'chocolate cake', hint:'food'},
+          {word: 'three spoiled apples', hint:'food'},
+          {word: 'seedless watermelon', hint:'food'},
+          {word: 'kayaking through waterfall', hint:'sport'},
+          {word: 'football', hint:'sport'},
+          {word: 'underwater basket weaving', hint:'sport'},
+          {word: 'major league baseball', hint:'sport'},
+          {word: 'minor leage basketball', hint:'sport'},
+          {word: 'the matrix', hint:'movie'},
+          {word: 'the last of the mohicans', hint:'movie'},
+          {word: 'goodfellas', hint:'movie'},
+          {word: 'star wars', hint:'movie'},
+          {word: 'john wick', hint:'movie'}
+        ];
+        //use default word and hint if URL does not specify custom made word
+        var randomInt = Math.floor(Math.random() * defaultValues.length);
+        setGameAnswer(defaultValues[randomInt].word.toUpperCase());
+    }
+  }, [])
 
   const [gameInProgress, setGameInProgress] = useState(false);
 
@@ -36,6 +96,28 @@ function App() {
     what's the most efficient way to store the user's progress?
     maybe make some sort of index map with the letters in the answer?
     */
+
+  function incrementScore() {
+    //make post request with userID
+    fetch(`${userDataEndpoint}/leaderboard/${userId}`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Connection: "keep-alive",
+      }
+    }).then((response) => {
+      if (response.status === 500) {
+        console.log('error in incrementing score, 500 error')
+      }
+      response.json().then(a => {
+      })
+      .catch((err) => {
+        console.log('error in incrementing score')
+        console.log(err);
+      })
+    });
+  }
 
     function newGame(newAnswer) {
       const answer = newAnswer.toUpperCase();
@@ -80,31 +162,7 @@ function App() {
 
   function gameWon() {
     console.log("--- You won! ---");
-    //TODO: send post request to backend
-    try {
-      fetch(`${dataEndpoint}/leaderboard`, {
-        method: "POST",
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          userId: "placeholder",
-          wordID: "placeholder"
-        })
-      }).then(
-        (response) => {
-          console.log(response);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
-  catch (NetworkError) {
-    console.log("ow");
-  }
-
+    incrementScore();
   }
 
   function gameLost() {
@@ -119,7 +177,7 @@ function App() {
 
   return (
     <div className="App">
-      <ShareLink />
+      <ShareLink dataEndpoint={userDataEndpoint}/>
       {gameAnswer &&
       (
         <div className={"game-status-display"}>
