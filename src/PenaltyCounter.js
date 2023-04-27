@@ -4,8 +4,8 @@ export default function PenaltyCounter({penalties, maxPenalties}) {
     return(
         <div className="penalty-counter">
             <div className="img-container">
-                {(penalties <= maxPenalties+1) && 
-                    <img src={`stickman/${penalties}.svg`}
+                {(penalties <= maxPenalties+1) &&
+                    <img src={`stickman/${penalties}.png`}
                     alt={`You've made ${penalties} mistakes so far.`}/>
                 }
             </div>
@@ -17,7 +17,7 @@ export default function PenaltyCounter({penalties, maxPenalties}) {
                 "chance remains"
                 : "chances remain"}</span>
             </div>
-            
+
         </div>
     )
 }
