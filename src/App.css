@@ -124,7 +124,7 @@
 .keyboard-tile {
   width: 10%;
   max-width: 100px;
-  margin: 0.5%;
+  margin: min(0.5%, 5px);
   aspect-ratio: 1;
   font-size: min(5vw, 50px);
   background-color: darkslategray;
@@ -145,7 +145,7 @@
   width: 7.5%;
   max-width: 75px;
   font-size: min(3.75vw, 37.5px);
-  margin: 1.75%;
+  margin: min(1.75%, 17.5px);
 }
 
 .keyboard-row .correct-letter {
@@ -218,17 +218,34 @@
   width: 20%;
   padding: 2%;
   display: inline-block;
+  text-align: center;
   vertical-align: top;
   position: relative;
 }
 
+.penalty-counter .img-container {
+  height: 20vw;
+  max-height: 200px;
+  justify-content: center;
+  align-items: center;
+}
+
 .penalty-counter img {
-  width: 100%;
-  max-width: 20vh;
+
+  height: 100%;
   object-fit: contain;
 }
 
 .penalty-counter span {
+  width: 100%;
+  text-align: center;
+}
+
+.penalty-counter .chance-counter {
+  font-weight: bold;
+}
+
+/* .penalty-counter span {
   position: absolute;
   display: flex;
   width: 100%;
@@ -240,7 +257,7 @@
   align-items: center;
   text-align: center;
   vertical-align: middle;
-}
+} */
 
 @media only screen and (max-width: 700px) {
   .penalty-counter {
