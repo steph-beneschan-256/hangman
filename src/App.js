@@ -267,6 +267,11 @@ function App() {
 
       {true && (
         <>
+          {(gameStatus === gameStates.notStarted) && <>
+            <h1>Hangman</h1>
+            <h2>By Mauro, Seij, and Steph</h2>
+            {/* <img src="stickman/0.png" alt=""></img> */}
+          </>}
           {gameStatus !== gameStates.notStarted && (
             <div className={"game-status-display"}>
               <PhraseDisplay
@@ -305,20 +310,43 @@ function App() {
           onLetterSelected={submitGuess}/>
         </>)
         :
-        (<div>
-          <button onClick={newGameButtonClicked}>New Game</button>
-          <button onClick={() => setCurrentModal("how-to-play")}>How to Play</button>
-          <button onClick={() => setCurrentModal("leaderboard")}>Leaderboard</button>
-          <button onClick={() => setCurrentModal("share-link")}>Create a Game</button>
-        </div>)}
+        (<>
+          
+          <div>
+            <button onClick={newGameButtonClicked}>New Game</button>
+            <button onClick={() => setCurrentModal("how-to-play")}>How to Play</button>
+            <button onClick={() => setCurrentModal("leaderboard")}>Leaderboard</button>
+            <button onClick={() => setCurrentModal("share-link")}>Create a Game</button>
+          </div>
+        </>)}
       </div>
 
-      {(currentModal === "leaderboard") && <Leaderboard leaderboardData={leaderboardData} currentUserID={userID}
-      onClose={() => setCurrentModal("")}/>}
-      {(currentModal === "share-link") && <ShareLink dataEndpoint={userDataEndpoint}
-      onClose={() => setCurrentModal("")}/>}
-      {(currentModal === "how-to-play") && <HowToPlay
-      onClose={() => setCurrentModal("")}/>}
+      {currentModal && (
+        <div className="darken-screen">
+          <div className="modal">
+            {(currentModal === "leaderboard") && <>
+              <h2>Top 10 Players:</h2>
+              <Leaderboard leaderboardData={leaderboardData} currentUserID={userID}
+              onClose={() => setCurrentModal("")}/>
+            </>}
+            {(currentModal === "share-link") && <>
+              <h2>Create a Game for a Friend:</h2>
+              <ShareLink dataEndpoint={userDataEndpoint}
+              onClose={() => setCurrentModal("")}/>
+            </>}
+            {(currentModal === "how-to-play") && <>
+              <h2>How to Play</h2>
+              <HowToPlay
+              onClose={() => setCurrentModal("")}/>
+            </>}
+          </div>
+          <div>
+            
+
+          </div>
+        </div>
+      )}
+
         </>
       )}
     </div>
