@@ -13,13 +13,14 @@ export default function Leaderboard({leaderboardData, currentUserID, onClose}) {
                 <div className="score">Games Won:</div>
             </div>
             {leaderboardData.map((data, index) => {
-                const backgroundClass = (data.userId === currentUserID) ? "current-user" : (index % 2===0 ? "even-row" : "odd-row");
+                console.log(data);
+                const backgroundClass = (data["id"] === currentUserID) ? "current-user" : (index % 2===0 ? "even-row" : "odd-row");
                 return(<div className={`data-row ${backgroundClass}`}>
                     <div className="rank">
                         {index+1}
-                        {(index+1>=1)&&(index+1<=3) && (
+                        {/* {(index+1>=1)&&(index+1<=3) && (
                             <img src={`crown-${index+1}.svg`} alt=""/>
-                        )}
+                        )} */}
                     </div>
                     
                     <div className="name">

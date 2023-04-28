@@ -31,6 +31,9 @@ function App() {
   const [userID, setUserID] = useState(""); //using placeholder ID for testing
   const [userDataLS, setUserDataLS] = useLocalStorage(null, "userData");
 
+  const [gamesWon, setGamesWon] = useState(0); // Games that the user has won;
+  const [unloggedgamesWon, setunloggedGamesWon] = useLocalStorage(0, "gamesWon"); // Games that the user has won, before logging in
+
   useEffect(() => {
     //load the game answer
     //check if the current URL contains an ID for a pre-made word
@@ -116,6 +119,10 @@ function App() {
       if (response.status === 500) {
         console.log("error in incrementing score, 500 error");
       }
+      else if(response.status === 200) {
+        console.log("score incremented")
+      }
+      else {
       response
         .json()
         .then((a) => {
@@ -126,6 +133,7 @@ function App() {
           console.log("error in incrementing score");
           console.log(err);
         });
+      }
     });
   }
 
@@ -180,7 +188,12 @@ function App() {
 
   function gameWon() {
     console.log("--- You won! ---");
-    incrementScore();
+    if(userID) {
+      setGamesWon(gamesWon + 1);
+      incrementScore();
+    }
+    else
+      setunloggedGamesWon(unloggedgamesWon + 1);
   }
 
   function gameLost() {
@@ -195,6 +208,14 @@ function App() {
   function loggedIn(data) {
     setUserID(data["id"]);
     setUserName(data["name"]);
+    setGamesWon(data["score"]);
+    console.log(data);
+    if(unloggedgamesWon > 0) {
+      //TODO: Update leaderboard with games won before log-in
+      console.log(`Games won before login: ${unloggedgamesWon}`);
+      setunloggedGamesWon(0);
+    }
+
   }
 
   function loggedOut() {
@@ -203,26 +224,39 @@ function App() {
     setUserName("");
   }
 
+  function gamesWonString() {
+    const winCount = userID ? gamesWon : unloggedgamesWon;
+    return `You've won a total of ${winCount} ${(winCount === 1) ? "game" : "games"}!`;
+  }
+
   return (
     <div className="App">
-      {!userID ? (
-        <div id="loginBarContainer">
-          <LoginBar
-            onLoggedIn={loggedIn}
-            dataEndpoint={userDataEndpoint}
-            setUserDataLS={setUserDataLS}
-            userDataLS={userDataLS}
-          />
-        </div>
-      ) : (
-        <div>
-          Logged in as {userName}
-          <button onClick={loggedOut}>Sign Out</button>
-        </div>
-      )}
-      {userID && (
+      <div className="header">
+        {userID ? (
+          <>
+            <div className="user-info">
+              <span className="logged-in-as">Logged in as </span>
+              <span className="user-name">{userName}</span>
+            </div>
+            <div className="logout-button-container">
+              <button onClick={loggedOut}>Sign Out</button>
+            </div>
+          </>
+        ):(
+          <div className="login-bar-container">
+            <div>Log in to join the leaderboard!</div>
+            <LoginBar
+              onLoggedIn={loggedIn}
+              dataEndpoint={userDataEndpoint}
+              setUserDataLS={setUserDataLS}
+              userDataLS={userDataLS}
+            />
+          </div>
+        )}
+      </div>
+
+      {true && (
         <>
-          <ShareLink dataEndpoint={userDataEndpoint} />
           {gameStatus !== gameStates.notStarted && (
             <div className={"game-status-display"}>
               <PhraseDisplay
@@ -237,6 +271,22 @@ function App() {
               />
             </div>
           )}
+
+          {(gameStatus === gameStates.won) && (
+            <>
+              <div>
+                YOU WON!
+              </div>
+              <div>
+                {gamesWonString()}
+              </div>
+            </>
+          )}
+          {(gameStatus === gameStates.lost) && (
+            <div>
+              Better luck next time!
+            </div>
+          )}
     
       <div>
         {(gameStatus === gameStates.inProgress) ? 
@@ -248,10 +298,11 @@ function App() {
         (<div>
           <button onClick={newGameButtonClicked}>New Game</button>
           <button onClick={() => setShowLeaderBoard(true)}>Leaderboard</button>
+          <ShareLink dataEndpoint={userDataEndpoint} />
         </div>)}
       </div>
 
-      {showLeaderboard && <Leaderboard leaderboardData={leaderboardData} currentUserID={userId}
+      {showLeaderboard && <Leaderboard leaderboardData={leaderboardData} currentUserID={userID}
       onClose={() => setShowLeaderBoard(false)}/>}
         </>
       )}
