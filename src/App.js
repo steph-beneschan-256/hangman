@@ -21,7 +21,7 @@ function App() {
   const customWordLoaded = useRef(false);
   const leaderboardLoaded = useRef(false);
 
-  const [showLeaderboard, setShowLeaderBoard] = useState(false);
+  const [currentModal, setCurrentModal] = useState(""); //should be "leaderboard" or "" or "share-link"
 
   const [gameStatus, setGameStatus] = useState(gameStates.notStarted);
 
@@ -297,13 +297,15 @@ function App() {
         :
         (<div>
           <button onClick={newGameButtonClicked}>New Game</button>
-          <button onClick={() => setShowLeaderBoard(true)}>Leaderboard</button>
-          <ShareLink dataEndpoint={userDataEndpoint} />
+          <button onClick={() => setCurrentModal("leaderboard")}>Leaderboard</button>
+          <button onClick={() => setCurrentModal("share-link")}>Create a Game</button>
         </div>)}
       </div>
 
-      {showLeaderboard && <Leaderboard leaderboardData={leaderboardData} currentUserID={userID}
-      onClose={() => setShowLeaderBoard(false)}/>}
+      {(currentModal === "leaderboard") && <Leaderboard leaderboardData={leaderboardData} currentUserID={userID}
+      onClose={() => setCurrentModal("")}/>}
+      {(currentModal === "share-link") && <ShareLink dataEndpoint={userDataEndpoint}
+      onClose={() => setCurrentModal("")}/>}
         </>
       )}
     </div>

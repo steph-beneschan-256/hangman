@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import './shareLink.css';
+import "./modal.css";
 
-export default function ShareLink ({ dataEndpoint }) {
+export default function ShareLink ({ dataEndpoint, onClose }) {
   //this UI component encompasses all functionality related to creating a new word
 
   const appLink = 'localhost:3000'; //this needs to be updated when hosting occurs
@@ -125,25 +126,27 @@ export default function ShareLink ({ dataEndpoint }) {
     );
   }
   return (
-    <div className='shareLinkContainer'>
-      <button onClick={toggleForm}>{toggleText}</button>
-      <div className={`createWordForm ${formVisibility}`}>
-        <p>Step 1: Create your word (max 30 character limit)</p>
-        <form><input onChange={handleWordChange} value={userWord}></input></form>
-        <p>Step 2: Provide a hint (optional, max 30 character limit)</p>
-        <form><input onChange={handleHintChange} value={userHint}></input></form>
-        <p>Step 3: Share the link to a friend</p>
-        <button className={`submitButton ${submitButtonClass}`} onClick={generateLinkHandler}>Generate Link</button>
-        <p>{warning}</p>
-        <div className='link-container'>
-          <div className={linkDisplay}>
-            <div className='flex justify-center link-display'>
-              <p>{link}</p>
-              <img className='copy-image' onClick={copyLink} src="https://img.icons8.com/material-sharp/24/null/copy.png" alt='copy'/>
+    <div className="darken-screen">
+      <div className='shareLinkContainer modal'>
+        <div className={`createWordForm`}>
+          <p>Step 1: Create your word (max 30 character limit)</p>
+          <form><input onChange={handleWordChange} value={userWord}></input></form>
+          <p>Step 2: Provide a hint (optional, max 30 character limit)</p>
+          <form><input onChange={handleHintChange} value={userHint}></input></form>
+          <p>Step 3: Share the link to a friend</p>
+          <button className={`submitButton ${submitButtonClass}`} onClick={generateLinkHandler}>Generate Link</button>
+          <p>{warning}</p>
+          <div className='link-container'>
+            <div className={linkDisplay}>
+              <div className='flex justify-center link-display'>
+                <p>{link}</p>
+                <img className='copy-image' onClick={copyLink} src="https://img.icons8.com/material-sharp/24/null/copy.png" alt='copy'/>
+              </div>
+              <p> {copyMessage}</p>
             </div>
-            <p> {copyMessage}</p>
           </div>
         </div>
+        <button onClick={onClose}>Close</button>
       </div>
     </div>
   )
