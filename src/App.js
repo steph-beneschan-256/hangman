@@ -23,6 +23,8 @@ function App() {
   const leaderboardLoaded = useRef(false);
   const keyboardInputDisabled = useRef(false); // determines whether the user can use the keyboard to guess letters in the game
 
+  const [loadLeaderboard, setloadLeaderboard] = useState(false);
+
   const [currentModal, setCurrentModal] = useState(""); //should be "leaderboard" or "" or "share-link"
 
   const [gameStatus, setGameStatus] = useState(gameStates.notStarted);
@@ -67,7 +69,10 @@ function App() {
       });
     }
 
-    if (!leaderboardLoaded.current) {
+  }, [path]);
+
+  useEffect(() => {
+    if (loadLeaderboard) {
       fetch(`${userDataEndpoint}/leaderboard`, {
         method: "GET",
         headers: {
@@ -78,11 +83,11 @@ function App() {
         if (response.status === 404) console.log("404 error");
         response.json().then((leaderboardData) => {
           setLeaderboardData(leaderboardData);
-          leaderboardLoaded.current = true;
+          setloadLeaderboard(false);
         });
       });
     }
-  }, []);
+  }, [loadLeaderboard])
 
   function handleKeyboardPress(e) {
     // do not prevent default behavior
@@ -115,7 +120,7 @@ function App() {
   // How many penalties the player can make before losing the game (TODO: find reasonable number)
   const maxPenalties = 5;
 
-  function incrementScore() {
+  function incrementScore(points=1) {
     //make post request with userID
     fetch(`${userDataEndpoint}/leaderboard/${userID}`, {
       method: "POST",
@@ -124,6 +129,9 @@ function App() {
         "Content-Type": "application/json",
         Connection: "keep-alive",
       },
+      body: JSON.stringify({
+        points: points
+      })
     }).then((response) => {
       if (response.status === 500) {
         console.log("error in incrementing score, 500 error");
@@ -135,8 +143,7 @@ function App() {
       response
         .json()
         .then((a) => {
-          //reload leaderboard
-          leaderboardLoaded.current = false;
+          
         })
         .catch((err) => {
           console.log("error in incrementing score");
@@ -144,6 +151,9 @@ function App() {
         });
       }
     });
+
+    //Trigger leaderboard update
+    setloadLeaderboard(true);
   }
 
   function newGame(wordData) {
@@ -220,8 +230,9 @@ function App() {
     setGamesWon(data["score"]);
     console.log(data);
     if(unloggedgamesWon > 0) {
-      //TODO: Update leaderboard with games won before log-in
+      //Update leaderboard with games won before log-in
       console.log(`Games won before login: ${unloggedgamesWon}`);
+      incrementScore(unloggedgamesWon);
       setunloggedGamesWon(0);
     }
 
@@ -315,7 +326,7 @@ function App() {
           <div>
             <button onClick={newGameButtonClicked}>New Game</button>
             <button onClick={() => setCurrentModal("how-to-play")}>How to Play</button>
-            <button onClick={() => setCurrentModal("leaderboard")}>Leaderboard</button>
+            <button onClick={() => {setloadLeaderboard(true); setCurrentModal("leaderboard")}}>Leaderboard</button>
             <button onClick={() => setCurrentModal("share-link")}>Create a Game</button>
           </div>
         </>)}
