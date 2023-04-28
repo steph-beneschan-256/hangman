@@ -91,8 +91,14 @@ function App() {
   }, []);
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyPress);
-  }, [handleKeyPress]);
+    // window.addEventListener('keydown', (e) => {
+    //   // do not prevent default behavior
+    //   console.log(e);
+    //   const key = e.key.toUpperCase();
+    //   submitGuess(key);
+
+    // });
+  });
 
   const [gameAnswer, setGameAnswer] = useState("");
   const [hint, setHint] = useState("");
@@ -223,8 +229,6 @@ function App() {
 
   function gameLost() {
     console.log("--- Try Again ---");
-
-    //TODO: update leaderboard?
   }
 
   function newGameButtonClicked() {
@@ -294,7 +298,6 @@ function App() {
 
       {showLeaderboard && <Leaderboard leaderboardData={leaderboardData} currentUserID={userId}
       onClose={() => setShowLeaderBoard(false)}/>}
-    </div>
 
           {leaderboardLoaded && (
             <Leaderboard
