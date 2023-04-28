@@ -29,6 +29,8 @@ function App() {
   const customWordLoaded = useRef(false);
   const leaderboardLoaded = useRef(false);
 
+  const [showLeaderboard, setShowLeaderBoard] = useState(false);
+
   const [gameStatus, setGameStatus] = useState(gameStates.notStarted);
 
   const [leaderboardData, setLeaderboardData] = useState([]);
@@ -80,6 +82,10 @@ function App() {
       })
     }
   }, [])
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyPress);
+  }, [handleKeyPress]);
 
   const [gameAnswer, setGameAnswer] = useState("");
   const [hint, setHint] = useState("");
@@ -156,6 +162,19 @@ function App() {
     setGameStatus(gameStates.inProgress);
   }
 
+  function handleKeyPress(keyEvent) {
+    keyEvent.preventDefault();
+    console.log(keyEvent);
+    const key = keyEvent.key.toUpperCase();
+    submitGuess(key);
+  }
+
+  function submitGuess(guessedChar) {
+    //todo: check that character is valid
+    if(isLetter(guessedChar))
+      onGuessSubmitted(guessedChar);
+  }
+
   function onGuessSubmitted(guessedChar) {
     const guessWasCorrect = unrevealedLetters.has(guessedChar);
 
@@ -219,13 +238,17 @@ function App() {
         {(gameStatus === gameStates.inProgress) ? 
         (<>
           <LetterInput isValidLetter={isLetter} guessesMade={guessesMade}
-          onGuessSubmitted={onGuessSubmitted}/>
+          onLetterSelected={submitGuess}/>
         </>)
         :
-        (<button onClick={newGameButtonClicked}>New Game</button>)}
+        (<div>
+          <button onClick={newGameButtonClicked}>New Game</button>
+          <button onClick={() => setShowLeaderBoard(true)}>Leaderboard</button>
+        </div>)}
       </div>
 
-      {leaderboardLoaded && <Leaderboard leaderboardData={leaderboardData} currentUserID={userId}/>}
+      {showLeaderboard && <Leaderboard leaderboardData={leaderboardData} currentUserID={userId}
+      onClose={() => setShowLeaderBoard(false)}/>}
     </div>
 
   );

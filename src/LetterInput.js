@@ -1,4 +1,3 @@
-import { useState } from "react";
 import './letterInput.css';
 
 /*
@@ -6,39 +5,11 @@ Notes:
     * I originally thought that it would be better to use a text input element rather than an on-screen keyboard, mainly because I thought that it would be easier to support additional languages.
     I now think that it might be better to create a different on-screen keyboard according to the user's device language
     (of course, I assume that for the challenge we only need to support English)
+Notes II:
+    * I decided that it might be kind of a hassle for users to press the submit button after selecting a letter,
+    and since this is only a game, preventing the consequences of someone pressing the wrong letter on accident
+    should be minimal. So, I have removed the confirmation step for guessing a letter.
 */
-
-/*
-Default function for the letterIsValid prop of the LetterInput component (please see below)
-*/
-function defaultLetterIsValid(letter) {
-    const p = /^[A-Za-z]$/; 
-    return p.test(letter);
-}
-
-/*
-Header that appears at the top of the LetterInput component; shows the currently selected letter and a "submit guess" button
-*/
-function HeaderBar({selectedLetter, onSubmit}) {
-
-    return(
-        <div className="letter-input-header">
-            <div className="header-a">
-                Choose a letter to guess:
-            </div>
-            <div className="header-b">
-                {selectedLetter}
-            </div>
-            <div className="header-c">
-                {selectedLetter &&
-                <button onClick={onSubmit}>
-                    Submit Guess
-                </button>
-                }
-            </div>
-        </div>
-    )
-}
 
 /*
 On-screen keyboard, similar to the one seen in the game Wordle
@@ -70,53 +41,12 @@ function KeyBoard({onLetterSelected, guessesMade}) {
     )
 }
 
-/*
-Props:
-    * letterIsValid: function taking a single letter/character as input; returns boolean depending on whether the letter is valid (i.e. whether the user is able to guess that letter); has nothing to do with whether the letter is correct/part of the answer
-        * (Would it be better to just use a RegEx pattern?)
-    * guessesMade: a Map object, mapping each letter that the user has guessed to a boolean indicating whether the guess was correct
-    * onGuessSubmitted: function to be called when the user has submitted a guess
-*/
-
-export default function LetterInput({isValidLetter=defaultLetterIsValid, guessesMade, onGuessSubmitted}) {
-    const [selectedLetter, setSelectedLetter] = useState('');
-    const [errorMsg, setErrorMsg] = useState("");
-
-    function submitGuess() {
-        if(isValidLetter(selectedLetter)) {        
-            onGuessSubmitted(selectedLetter);
-            console.log(`Guessed ${selectedLetter}`);
-            setSelectedLetter(''); //reset input letter in box
-        }
-    }
-
-    function keyPressed(keyEvent) {
-        keyEvent.preventDefault();
-        const key = keyEvent.key.toUpperCase();
-        switch(key) {
-            case "ENTER":
-                submitGuess();
-                break;
-            case "BACKSPACE":
-                setSelectedLetter('');
-                break;
-            default:
-                inputLetterChanged(key);
-                break;
-        }
-    }
-
-    function inputLetterChanged(newLetter) {
-        if(isValidLetter(newLetter))
-            setSelectedLetter(newLetter);
-        else
-            console.log(`Invalid letter entered: ${newLetter}`);
-    }
-
+export default function LetterInput({guessesMade, onLetterSelected}) {
     return(
-        <div className="letter-input" onKeyDown={keyPressed}>
-            <HeaderBar selectedLetter={selectedLetter} onSubmit={submitGuess}/>
-            <KeyBoard onLetterSelected={inputLetterChanged} guessesMade={guessesMade}/>
+        <div className="letter-input">
+            {/* <HeaderBar selectedLetter={selectedLetter}/> */}
+            <h2>Choose a Letter:</h2>
+            <KeyBoard onLetterSelected={onLetterSelected} guessesMade={guessesMade}/>
         </div>
     )
 }
