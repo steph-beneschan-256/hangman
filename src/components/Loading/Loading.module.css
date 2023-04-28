@@ -1,15 +1,14 @@
 .loader {
-  color: #bfbfbf;
-  font-size: 45px;
-  text-indent: -9999em;
+  color: #8f8f8f;
+  font-size: 1.5em;
+  text-indent: 100em;
   overflow: hidden;
   display: inline-block;
   width: 1em;
-  height: 1em;
+  margin-top: 0.5em;
+  aspect-ratio: 1;
   border-radius: 50%;
-  position: absolute;
-  top: calc(50vh - 0.5em);
-  left: calc(50vw - 0.5em);
+  left: 50%;
   transform: translateZ(0);
   animation: mltShdSpin 1.7s infinite ease, round 1.7s infinite ease;
 }

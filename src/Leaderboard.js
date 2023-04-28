@@ -19,9 +19,9 @@ export default function Leaderboard({leaderboardData, currentUserID, onClose}) {
                     return(<div className={`data-row ${backgroundClass}`}>
                         <div className="rank">
                             {index+1}
-                            {/* {(index+1>=1)&&(index+1<=3) && (
+                            {(index+1>=1)&&(index+1<=3) && (
                                 <img src={`crown-${index+1}.svg`} alt=""/>
-                            )} */}
+                            )}
                         </div>
                         
                         <div className="name">

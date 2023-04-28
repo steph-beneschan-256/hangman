@@ -91,9 +91,12 @@ export default function LoginBar({
   return (
     <div className="log-in-bar">
       {isLoadingLogin ? (
-        <Loading />
+        <div className="loading-container">
+          <Loading />
+        </div>
       ) : (
         <>
+          <div>Log in to join the leaderboard!</div>
           <input
             type="text"
             className="username-field"

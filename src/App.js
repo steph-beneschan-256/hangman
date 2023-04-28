@@ -252,7 +252,6 @@ function App() {
           </>
         ):(
           <div className="login-bar-container">
-            <div>Log in to join the leaderboard!</div>
             <LoginBar
               onLoggedIn={loggedIn}
               dataEndpoint={userDataEndpoint}
