@@ -9,17 +9,7 @@ import Leaderboard from "./Leaderboard";
 import { gameStates } from "./GameStates";
 import LoginBar from "./components/LoginBar/LoginBar";
 import useLocalStorage from "./components/useLocalStorage/useLocalStorage";
-
-/*
-Return a boolean indicating whether the character is a letter
-*/
-function isLetter(char) {
-  return /^[A-Za-z]$/.test(char);
-}
-
-function isSpecialChar(char) {
-  return !isLetter(char);
-}
+import languageManager from "./languageManager";
 
 function App() {
   var customWord = false;
@@ -30,7 +20,6 @@ function App() {
 
   const customWordLoaded = useRef(false);
   const leaderboardLoaded = useRef(false);
-  const keyboardListenerLoaded = useRef(false);
 
   const [showLeaderboard, setShowLeaderBoard] = useState(false);
 
@@ -64,7 +53,6 @@ function App() {
           .then((a) => {
             console.log(a);
             setGameAnswer(a.word);
-            gameHint = a.hint;
             newGame(a);
           })
           .catch((err) => {
@@ -93,8 +81,10 @@ function App() {
 
   function handleKeyboardPress(e) {
     // do not prevent default behavior
-    const key = e.key.toUpperCase();
-    submitGuess(key);
+    if(!e.ctrlKey) {
+      const key = e.key.toUpperCase();
+      submitGuess(key);
+    }
   }
 
   useEffect(() => {
@@ -112,34 +102,6 @@ function App() {
 
   // How many penalties the player can make before losing the game (TODO: find reasonable number)
   const maxPenalties = 5;
-
-  function getRandomWord() {
-    const defaultValues = [
-      { word: "hairy rabbit", hint: "animal" },
-      { word: "grey fox", hint: "animal" },
-      { word: "big whale", hint: "animal" },
-      { word: "orange goldfish", hint: "animal" },
-      { word: "bald eagle", hint: "animal" },
-      { word: "buttered toast", hint: "food" },
-      { word: "bag of fries", hint: "food" },
-      { word: "chocolate cake", hint: "food" },
-      { word: "three spoiled apples", hint: "food" },
-      { word: "seedless watermelon", hint: "food" },
-      { word: "kayaking through waterfall", hint: "sport" },
-      { word: "football", hint: "sport" },
-      { word: "underwater basket weaving", hint: "sport" },
-      { word: "major league baseball", hint: "sport" },
-      { word: "minor leage basketball", hint: "sport" },
-      { word: "the matrix", hint: "movie" },
-      { word: "the last of the mohicans", hint: "movie" },
-      { word: "goodfellas", hint: "movie" },
-      { word: "star wars", hint: "movie" },
-      { word: "john wick", hint: "movie" },
-    ];
-    //use default word and hint if URL does not specify custom made word
-    var randomInt = Math.floor(Math.random() * defaultValues.length);
-    return defaultValues[randomInt];
-  }
 
   function incrementScore() {
     //make post request with userID
@@ -173,7 +135,7 @@ function App() {
     setGameAnswer(answer);
     setHint(wordData.hint);
     setUnrevealedLetters(
-      new Set(new Array(...answer).filter((char) => !isSpecialChar(char)))
+      new Set(new Array(...answer).filter((char) => !languageManager.isSpecialChar(char)))
     );
     setGuessesMade(new Map());
     setPenalties(0);
@@ -182,11 +144,8 @@ function App() {
   }
 
   function submitGuess(guessedChar) {
-    console.log("o");
-    console.log(gameStatus);
-    console.log(gameStates.inProgress);
-    if((gameStatus === gameStates.inProgress) && !guessesMade.has(guessedChar) && isLetter(guessedChar))
-    onGuessSubmitted(guessedChar);
+    if((gameStatus === gameStates.inProgress) && !guessesMade.has(guessedChar) && languageManager.isValidChar(guessedChar))
+      onGuessSubmitted(guessedChar);
   }
 
   function onGuessSubmitted(guessedChar) {
@@ -229,7 +188,7 @@ function App() {
   }
 
   function newGameButtonClicked() {
-    newGame(getRandomWord());
+    newGame(languageManager.getRandomPhrase());
     //newGame({word: "thequickfoxjumpsoverthelazydog", hint: "debug word (30 letters)"})
   }
 
@@ -269,7 +228,6 @@ function App() {
               <PhraseDisplay
                 answer={gameAnswer}
                 unrevealedLetters={unrevealedLetters}
-                isSpecialChar={isSpecialChar}
                 gameStatus={gameStatus}
                 hint={hint}
               />
@@ -283,7 +241,7 @@ function App() {
       <div>
         {(gameStatus === gameStates.inProgress) ? 
         (<>
-          <LetterInput isValidLetter={isLetter} guessesMade={guessesMade}
+          <LetterInput guessesMade={guessesMade}
           onLetterSelected={submitGuess}/>
         </>)
         :

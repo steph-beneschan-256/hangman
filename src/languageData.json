@@ -1,0 +1,30 @@
+{
+    "en": {
+        "validChar": "^[A-Za-z]$",
+        "specialChar": "^[^A-Za-z]$",
+        "wordSeparator": " |(?<=[A-Za-z][^A-Za-z]+)\\b",
+        "keyboardRows": ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"],
+        "words": [
+            { "word": "hairy rabbit", "hint": "animal" },
+            { "word": "grey fox", "hint": "animal" },
+            { "word": "big whale", "hint": "animal" },
+            { "word": "orange goldfish", "hint": "animal" },
+            { "word": "bald eagle", "hint": "animal" },
+            { "word": "buttered toast", "hint": "food" },
+            { "word": "bag of fries", "hint": "food" },
+            { "word": "chocolate cake", "hint": "food" },
+            { "word": "three spoiled apples", "hint": "food" },
+            { "word": "seedless watermelon", "hint": "food" },
+            { "word": "kayaking through waterfall", "hint": "sport" },
+            { "word": "football", "hint": "sport" },
+            { "word": "underwater basket weaving", "hint": "sport" },
+            { "word": "major league baseball", "hint": "sport" },
+            { "word": "minor leage basketball", "hint": "sport" },
+            { "word": "the matrix", "hint": "movie" },
+            { "word": "the last of the mohicans", "hint": "movie" },
+            { "word": "goodfellas", "hint": "movie" },
+            { "word": "star wars", "hint": "movie" },
+            { "word": "john wick", "hint": "movie" }
+        ]
+    }
+}
