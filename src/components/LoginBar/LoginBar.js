@@ -72,7 +72,7 @@ export default function LoginBar({
         onLoggedIn(userData);
         setUserDataLS(userName);
       } else {
-        setStatusMsg("An unknown error has occurred");
+        alert("Sorry, an error occurred while trying to log in.");
       }
     }
   }

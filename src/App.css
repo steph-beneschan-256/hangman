@@ -83,6 +83,24 @@
   border-radius: 0.5em;
 }
 
+.login-button:hover {
+  cursor: pointer;
+}
+
+.logout-button {
+  width: 100%;
+  text-align: center;
+  border: 2px solid;
+  border-color: blue;
+  background-color: white;
+  color: blue;
+  border-radius: 0.5em;
+}
+
+.logout-button:hover {
+  cursor: pointer;
+}
+
 .user-info {
   width: 80%;
   display: inline-block;

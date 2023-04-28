@@ -259,7 +259,7 @@ function App() {
               <span className="user-name">{userName}</span>
             </div>
             <div className="logout-button-container">
-              <button onClick={loggedOut}>Sign Out</button>
+              <button className="logout-button" onClick={loggedOut}>Sign Out</button>
             </div>
           </>
         ):(

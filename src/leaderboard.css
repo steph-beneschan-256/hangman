@@ -49,6 +49,7 @@
 }
 
 .leaderboard img {
-    width: 1.5em;
+    width: 0.75em;
+    padding: 0.125em;
 }
 
