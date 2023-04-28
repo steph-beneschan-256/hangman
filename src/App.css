@@ -112,3 +112,10 @@
   width: 10%;
   text-align: center;
 }
+
+.how-to-play h3 {
+  text-align: left;
+}
+.how-to-play p {
+  text-align: left;
+}
