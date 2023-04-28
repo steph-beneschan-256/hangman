@@ -30,6 +30,7 @@ function App() {
 
   const customWordLoaded = useRef(false);
   const leaderboardLoaded = useRef(false);
+  const keyboardListenerLoaded = useRef(false);
 
   const [showLeaderboard, setShowLeaderBoard] = useState(false);
 
@@ -90,15 +91,16 @@ function App() {
     }
   }, []);
 
-  useEffect(() => {
-    // window.addEventListener('keydown', (e) => {
-    //   // do not prevent default behavior
-    //   console.log(e);
-    //   const key = e.key.toUpperCase();
-    //   submitGuess(key);
+  function handleKeyboardPress(e) {
+    // do not prevent default behavior
+    const key = e.key.toUpperCase();
+    submitGuess(key);
+  }
 
-    // });
-  });
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyboardPress);
+    return () => {window.removeEventListener("keydown", handleKeyboardPress)};
+  })
 
   const [gameAnswer, setGameAnswer] = useState("");
   const [hint, setHint] = useState("");
@@ -179,16 +181,11 @@ function App() {
     setGameStatus(gameStates.inProgress);
   }
 
-  function handleKeyPress(keyEvent) {
-    keyEvent.preventDefault();
-    console.log(keyEvent);
-    const key = keyEvent.key.toUpperCase();
-    submitGuess(key);
-  }
-
   function submitGuess(guessedChar) {
-    //todo: check that character is valid
-    if(isLetter(guessedChar))
+    console.log("o");
+    console.log(gameStatus);
+    console.log(gameStates.inProgress);
+    if((gameStatus === gameStates.inProgress) && isLetter(guessedChar))
       onGuessSubmitted(guessedChar);
   }
 
@@ -298,13 +295,6 @@ function App() {
 
       {showLeaderboard && <Leaderboard leaderboardData={leaderboardData} currentUserID={userId}
       onClose={() => setShowLeaderBoard(false)}/>}
-
-          {leaderboardLoaded && (
-            <Leaderboard
-              leaderboardData={leaderboardData}
-              currentUserID={userID}
-            />
-          )}
         </>
       )}
     </div>
