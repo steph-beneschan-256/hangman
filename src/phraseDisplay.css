@@ -1,57 +1,53 @@
 /* --- For PhraseDisplay Component --- */
 
 .phrase-display {
-    width: 74%;
+    width: 75%;
     display: inline-block;
-  }
+}
+
+.hint {
+    width: 75%;
+}
   
-  @media only screen and (max-width: 700px) {
+@media only screen and (max-width: 700px) {
     .phrase-display {
-      width: 100%;
+        width: 100%;
     }
-  }
-  
-  .guessed-letters {
+}
+
+.guessed-letters {
     background-color: white;
     color: black;
-  }
-  
-  .guessed-letter {
+}
+
+.guessed-letter {
     display: inline-block;
     margin: 1vw;
     font-weight: bold;
     font-style: bold;
-  }
-  
-  .word {
+}
 
-    margin: 2vw;
+.word {
+    margin: min(2vw, 20px);
     display: inline-block;
-  }
-  
-  .char-tile {
-    min-width: 25px;
-    width: 0.5em;
+}
 
+.char-tile {
     max-width: 50px;
-    min-height: 38px;
-    height: 0.75em;
     max-height: 75px;
     text-align: center;
-    font-size: 1.5em;
     display: inline-block;
     vertical-align: middle;
-  }
-  
-  .letter-tile {
-    border: solid 1px black;
-  }
-  
-  .game-lost {
-    color: red;
-  }
+}
 
-  .game-won {
+.letter-tile {
+    border: solid 1px black;
+}
+
+.game-lost {
+    color: red;
+}
+
+.game-won {
     color: green;
-  }
-  
+}

@@ -200,6 +200,7 @@ function App() {
 
   function newGameButtonClicked() {
     newGame(getRandomWord());
+    //newGame({word: "thequickfoxjumpsoverthelazydog", hint: "debug word (30 letters)"})
   }
 
   return (
@@ -209,8 +210,7 @@ function App() {
       (
         <div className={"game-status-display"}>
           <PhraseDisplay answer={gameAnswer} unrevealedLetters={unrevealedLetters}
-          isSpecialChar={isSpecialChar} gameStatus={gameStatus}/>
-          <h3>Hint: {hint}</h3>
+          isSpecialChar={isSpecialChar} gameStatus={gameStatus} hint={hint}/>
           <PenaltyCounter penalties={penalties} maxPenalties={maxPenalties}/>
         </div>
       )}

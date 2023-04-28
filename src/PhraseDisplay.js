@@ -8,7 +8,7 @@ import "./phraseDisplay.css";
     * Letters that the user has already guessed
 */
 
-export default function PhraseDisplay({answer, unrevealedLetters, isSpecialChar, gameStatus}) {
+export default function PhraseDisplay({answer, unrevealedLetters, isSpecialChar, gameStatus, hint}) {
     console.log('in phrase display with the gameanswer: ' + answer);
 
     function getWords(str) {
@@ -18,8 +18,8 @@ export default function PhraseDisplay({answer, unrevealedLetters, isSpecialChar,
         //split answer into words
         //if special chars. are present, append first one to end of first word
         // for now, hardcode spec. char. regex string
-        return answer.split(/ |(?<=[A-Za-z][^A-Za-z]+)\b/);
-
+        const words = answer.split(/ |(?<=[A-Za-z][^A-Za-z]+)\b/);
+        return words;
 
         //TODO: 
         //const maxWordLen = words.length;
@@ -30,6 +30,16 @@ export default function PhraseDisplay({answer, unrevealedLetters, isSpecialChar,
         each word needs to fit on one line
         */
     }
+
+    const words = getWords(answer);
+
+    let maxWordLen = 0;
+    words.forEach(word => {
+        if(word.length > maxWordLen)
+            maxWordLen = word.length;
+    });
+    const tileWidth = 75/maxWordLen;
+    const tileHeight = tileWidth * 4/3;
     
     return(
         <div className="phrase-display">
@@ -48,7 +58,11 @@ export default function PhraseDisplay({answer, unrevealedLetters, isSpecialChar,
                         }
 
                         return(
-                            <div className={classes}>
+                            <div className={classes} style={{
+                                "width": `${tileWidth}vw`,
+                                "height": `${tileHeight}vw`, 
+                                "font-size": `min(${tileWidth}vw, 50px)`,
+                                }}>
                                 {((gameStatus === gameStates.inProgress) && unrevealedLetters.has(char)) ? "": char}
                             </div>
                         );
@@ -56,6 +70,7 @@ export default function PhraseDisplay({answer, unrevealedLetters, isSpecialChar,
                     }
                 </div>
             ))}
+            <h3>Hint: {hint}</h3>
         </div>
     )
 }
