@@ -266,6 +266,10 @@ function App() {
 
       {true && (
         <>
+          {(gameStatus === gameStates.notStarted) && <>
+            <h1>Hangman</h1>
+            {/* <img src="stickman/0.png" alt=""></img> */}
+          </>}
           {gameStatus !== gameStates.notStarted && (
             <div className={"game-status-display"}>
               <PhraseDisplay
@@ -304,11 +308,14 @@ function App() {
           onLetterSelected={submitGuess}/>
         </>)
         :
-        (<div>
-          <button onClick={newGameButtonClicked}>New Game</button>
-          <button onClick={() => setCurrentModal("leaderboard")}>Leaderboard</button>
-          <button onClick={() => setCurrentModal("share-link")}>Create a Game</button>
-        </div>)}
+        (<>
+          
+          <div>
+            <button onClick={newGameButtonClicked}>New Game</button>
+            <button onClick={() => setCurrentModal("leaderboard")}>Leaderboard</button>
+            <button onClick={() => setCurrentModal("share-link")}>Create a Game</button>
+          </div>
+        </>)}
       </div>
 
       {currentModal && (
