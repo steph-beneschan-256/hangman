@@ -185,8 +185,8 @@ function App() {
     console.log("o");
     console.log(gameStatus);
     console.log(gameStates.inProgress);
-    if((gameStatus === gameStates.inProgress) && isLetter(guessedChar))
-      onGuessSubmitted(guessedChar);
+    if((gameStatus === gameStates.inProgress) && !guessesMade.has(guessedChar) && isLetter(guessedChar))
+    onGuessSubmitted(guessedChar);
   }
 
   function onGuessSubmitted(guessedChar) {
