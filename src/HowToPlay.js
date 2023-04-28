@@ -16,7 +16,6 @@ export default function HowToPlay({onClose}) {
             <p>
                 You begin the game with six balloons. If you lose all six, then the game is over. In order to win the game, you must fully reveal the secret phrase without losing all six baloons.
             </p>
-            <button onClick={onClose}>Close</button>
         </div>
     )
 }

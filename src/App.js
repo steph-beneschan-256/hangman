@@ -323,11 +323,11 @@ function App() {
         :
         (<>
           
-          <div>
-            <button onClick={newGameButtonClicked}>New Game</button>
-            <button onClick={() => setCurrentModal("how-to-play")}>How to Play</button>
-            <button onClick={() => {setloadLeaderboard(true); setCurrentModal("leaderboard")}}>Leaderboard</button>
-            <button onClick={() => setCurrentModal("share-link")}>Create a Game</button>
+          <div style={{"width": "100%"}}>
+            <button className="menu-button" onClick={newGameButtonClicked}>New Game</button>
+            <button className="menu-button" onClick={() => setCurrentModal("how-to-play")}>How to Play</button>
+            <button className="menu-button" onClick={() => {setloadLeaderboard(true); setCurrentModal("leaderboard")}}>Leaderboard</button>
+            <button className="menu-button" onClick={() => setCurrentModal("share-link")}>Create a Game</button>
           </div>
         </>)}
       </div>
@@ -337,19 +337,17 @@ function App() {
           <div className="modal">
             {(currentModal === "leaderboard") && <>
               <h2>Top 10 Players:</h2>
-              <Leaderboard leaderboardData={leaderboardData} currentUserID={userID}
-              onClose={() => setCurrentModal("")}/>
+              <Leaderboard leaderboardData={leaderboardData} currentUserID={userID}/>
             </>}
             {(currentModal === "share-link") && <>
               <h2>Create a Game for a Friend:</h2>
-              <ShareLink dataEndpoint={userDataEndpoint}
-              onClose={() => setCurrentModal("")}/>
+              <ShareLink dataEndpoint={userDataEndpoint}/>
             </>}
             {(currentModal === "how-to-play") && <>
               <h2>How to Play</h2>
-              <HowToPlay
-              onClose={() => setCurrentModal("")}/>
+              <HowToPlay/>
             </>}
+            <button className="menu-button" onClick={() => setCurrentModal("")}>Close</button>
           </div>
           <div>
             

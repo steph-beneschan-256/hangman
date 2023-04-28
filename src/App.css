@@ -76,6 +76,11 @@
 .login-button {
   width: 20%;
   text-align: center;
+  border: 2px solid;
+  border-color: blue;
+  background-color: white;
+  color: blue;
+  border-radius: 0.5em;
 }
 
 .user-info {
@@ -118,4 +123,43 @@
 }
 .how-to-play p {
   text-align: left;
+}
+
+.menu-button {
+  width: 97.5%;
+  display: block;
+  margin: 1.25%;
+  height: 2em;
+  font-size: 1em;
+  background-color: blue;
+  border: none;
+  border-radius: 0.5em;
+  color: white;
+}
+
+.menu-button:hover {
+  cursor: pointer;
+  background-color: #4a8aff;
+}
+
+.submenu-button {
+  width: 95%;
+  padding: 1em;
+  font-size: 1em;
+  border: 2px solid;
+  border-color: blue;
+  background-color: white;
+  color: blue;
+  border-radius: 0.5em;
+}
+
+.submenu-button:hover {
+  cursor: pointer;
+  background-color: lightblue;
+}
+
+.menu-button:disabled {
+  background-color: lightgray;
+  color: gray;
+  cursor: not-allowed;
 }

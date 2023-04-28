@@ -21,7 +21,7 @@
   margin-left:5px;
 }
 .shareLinkContainer {
-  background-color:beige;
+  /* background-color:beige; */
   /* box-sizing:border-box; */
   padding-bottom:10px;
   padding-top:10px;
@@ -49,11 +49,12 @@
 }
 /* initial state is inactive */
 .inactive {
-  background-color:grey;
-  color:darkgray;
+  border-color: gray;
+  color:gray;
 }
 
 .inactive:hover{
+  border-color: gray;
   cursor:default;
 }
 

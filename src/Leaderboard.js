@@ -32,7 +32,6 @@ export default function Leaderboard({leaderboardData, currentUserID, onClose}) {
                 </div>)
             })}</>)
             :(<div>Loading leaderboard data...</div>)}
-            <button onClick={onClose}>Close</button>
         </div>
     )
 }
