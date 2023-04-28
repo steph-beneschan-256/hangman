@@ -126,9 +126,7 @@ export default function ShareLink ({ dataEndpoint, onClose }) {
     );
   }
   return (
-    <div className="darken-screen">
-      <div className='shareLinkContainer modal'>
-      <h2>Create a Game for a Friend:</h2>
+      <div className='shareLinkContainer'>
         <div className={`createWordForm`}>
           <p>Step 1: Create your word (max 30 character limit)</p>
           <form><input onChange={handleWordChange} value={userWord}></input></form>
@@ -149,6 +147,5 @@ export default function ShareLink ({ dataEndpoint, onClose }) {
         </div>
         <button onClick={onClose}>Close</button>
       </div>
-    </div>
   )
 }

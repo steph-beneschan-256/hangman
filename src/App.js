@@ -311,10 +311,27 @@ function App() {
         </div>)}
       </div>
 
-      {(currentModal === "leaderboard") && <Leaderboard leaderboardData={leaderboardData} currentUserID={userID}
-      onClose={() => setCurrentModal("")}/>}
-      {(currentModal === "share-link") && <ShareLink dataEndpoint={userDataEndpoint}
-      onClose={() => setCurrentModal("")}/>}
+      {currentModal && (
+        <div className="darken-screen">
+          <div className="modal">
+            {(currentModal === "leaderboard") && <>
+              <h2>Top 10 Players:</h2>
+              <Leaderboard leaderboardData={leaderboardData} currentUserID={userID}
+              onClose={() => setCurrentModal("")}/>
+            </>}
+            {(currentModal === "share-link") && <>
+              <h2>Create a Game for a Friend:</h2>
+              <ShareLink dataEndpoint={userDataEndpoint}
+              onClose={() => setCurrentModal("")}/>
+            </>}
+          </div>
+          <div>
+            
+
+          </div>
+        </div>
+      )}
+
         </>
       )}
     </div>
