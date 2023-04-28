@@ -268,6 +268,7 @@ function App() {
         <>
           {(gameStatus === gameStates.notStarted) && <>
             <h1>Hangman</h1>
+            <h2>By Mauro, Seij, and Steph</h2>
             {/* <img src="stickman/0.png" alt=""></img> */}
           </>}
           {gameStatus !== gameStates.notStarted && (
