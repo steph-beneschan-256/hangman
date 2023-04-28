@@ -3,10 +3,13 @@
   font-size: 45px;
   text-indent: -9999em;
   overflow: hidden;
+  display: inline-block;
   width: 1em;
   height: 1em;
   border-radius: 50%;
-  position: relative;
+  position: absolute;
+  top: calc(50vh - 0.5em);
+  left: calc(50vw - 0.5em);
   transform: translateZ(0);
   animation: mltShdSpin 1.7s infinite ease, round 1.7s infinite ease;
 }

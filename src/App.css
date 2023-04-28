@@ -10,10 +10,108 @@
   padding-top: 5%;
 }
 
+@keyframes fade-in {
+  0% {background-color: #00000000;}
+  100% {background-color: #00000088;}
+}
+
 .darken-screen {
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   background-color: #00000088;
+  animation-name: fade-in;
+  animation-duration: 0.5s;
+}
+
+.current-user-data {
+  height: 100%;
+  max-height: 100px;
+  background-color: red;
+}
+
+/* --- For logging in --- */
+
+.logged-in-as {
+  font-size: 1em;
+}
+
+.header {
+  width: 96%;
+  height: 10%;
+  padding: 2%;
+}
+
+.not-logged-in {
+  width: 30%;
+  display: inline-block;
+  text-align: left;
+}
+
+.login-bar-container {
+  width: 100%;
+  display: inline-block;
+  text-align: left;
+}
+
+@media only screen and (max-width : 700px) {
+  .login-bar-container {
+    width: 100%;
+    text-align: center;
+  }
+  
+}
+
+.log-in-bar {
+  width: 100%;
+  display: inline-block;
+}
+
+.username-field {
+  width: 70%;
+  margin-right: 5%;
+  border: 1px solid #00000088;
+  border-radius: 5vw;
+  text-indent: 1em;
+}
+
+.login-button {
+  width: 20%;
+  text-align: center;
+}
+
+.user-info {
+  width: 80%;
+  display: inline-block;
+  text-align: left;
+}
+.logout-button-container {
+  width: 20%;
+  display: inline-block;
+  text-align: right;
+}
+
+.games-won {
+  display: inline-block;
+  font-size: 1em;
+  text-indent: 1em;
+  text-align: left;
+
+}
+
+.user-name {
+  font-size: 1.25em;
+  font-weight: bold;
+}
+
+.user-info-a {
+  display: inline-block;
+  width: 40%;
+  text-align: right;
+}
+.user-info-b {
+  display: inline-block;
+  width: 10%;
+  text-align: center;
 }

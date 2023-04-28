@@ -12,7 +12,6 @@ export default function LoginBar({
   const [isLoadingLogin, setIsLoadingLogin] = useState(false);
 
   async function getUserData() {
-    console.log("llamada");
     let response1 = await fetch(`${dataEndpoint}/user/${userName}`, {
       method: "GET",
       headers: {
@@ -25,13 +24,14 @@ export default function LoginBar({
       // User already exists
       const data = await response1.json().then((jsonData) => {
         const userID = jsonData["id"];
-        const tasks = jsonData["tasks"];
-        return { id: userID, tasks: tasks };
+        const name = jsonData["name"];
+        const score = jsonData["score"];
+        return {id: userID, name: name, score: score};
       });
       return data;
-    } else {
+    }
+    else {
       // Must register user
-      console.log(userName);
       let response2 = await fetch(`${dataEndpoint}/user`, {
         method: "POST",
         headers: {
@@ -50,8 +50,9 @@ export default function LoginBar({
         // New user created
         const responseData2 = await response2.json().then((jsonData) => {
           const userID = jsonData["id"];
-          const tasks = [];
-          return { id: userID, tasks: tasks };
+          const name = jsonData["name"];
+          const score = 0;
+          return {id: userID, name: name, score: score};
         });
         return responseData2;
       }
@@ -64,15 +65,13 @@ export default function LoginBar({
       setIsLoadingLogin(true);
       const userData = await getUserData();
       console.log(userData);
-      setIsLoadingLogin(true);
+      setIsLoadingLogin(false);
       if (userData) {
-        onLoggedIn({
-          id: userData["id"],
-          name: userName,
-          tasks: userData["tasks"],
-        });
+        onLoggedIn(userData);
         setUserDataLS(userName);
-      } else setStatusMsg("An unknown error has occurred");
+      } else {
+        setStatusMsg("An unknown error has occurred");
+      }
     }
   }
 
@@ -93,16 +92,15 @@ export default function LoginBar({
         <Loading />
       ) : (
         <>
-          <div className="loginBarContainer">
-            <input
-              type="text"
-              className="username-field"
-              value={userName}
-              placeholder="Username"
-              onChange={(e) => setUserName(e.target.value)}
-            />
-            <button onClick={logInButtonPressed}>Log In</button>
-          </div>
+          <input
+            type="text"
+            className="username-field"
+            value={userName}
+            placeholder="Username"
+            onChange={(e) => setUserName(e.target.value)}
+          />
+          <button className="login-button"
+          onClick={logInButtonPressed}>Log In</button>
           <div>{statusMsg}</div>
         </>
       )}

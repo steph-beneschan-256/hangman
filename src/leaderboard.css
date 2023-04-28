@@ -40,12 +40,15 @@
 }
 
 .leaderboard .rank {
-    width: 10%;
+    display: inline-block;
+    width: 15%;
 }
 .leaderboard .name {
-    width: 70%;
+    display: inline-block;
+    width: 65%;
 }
 .leaderboard .score {
+    display: inline-block;
     width: 20%;
 }
 
