@@ -10,6 +10,7 @@ import { gameStates } from "./GameStates";
 import LoginBar from "./components/LoginBar/LoginBar";
 import useLocalStorage from "./components/useLocalStorage/useLocalStorage";
 import languageManager from "./languageManager";
+import HowToPlay from "./HowToPlay";
 
 function App() {
   var customWord = false;
@@ -306,6 +307,7 @@ function App() {
         :
         (<div>
           <button onClick={newGameButtonClicked}>New Game</button>
+          <button onClick={() => setCurrentModal("how-to-play")}>How to Play</button>
           <button onClick={() => setCurrentModal("leaderboard")}>Leaderboard</button>
           <button onClick={() => setCurrentModal("share-link")}>Create a Game</button>
         </div>)}
@@ -314,6 +316,8 @@ function App() {
       {(currentModal === "leaderboard") && <Leaderboard leaderboardData={leaderboardData} currentUserID={userID}
       onClose={() => setCurrentModal("")}/>}
       {(currentModal === "share-link") && <ShareLink dataEndpoint={userDataEndpoint}
+      onClose={() => setCurrentModal("")}/>}
+      {(currentModal === "how-to-play") && <HowToPlay
       onClose={() => setCurrentModal("")}/>}
         </>
       )}
