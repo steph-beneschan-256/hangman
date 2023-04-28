@@ -20,6 +20,7 @@ function App() {
 
   const customWordLoaded = useRef(false);
   const leaderboardLoaded = useRef(false);
+  const keyboardInputDisabled = useRef(false); // determines whether the user can use the keyboard to guess letters in the game
 
   const [currentModal, setCurrentModal] = useState(""); //should be "leaderboard" or "" or "share-link"
 
@@ -84,10 +85,17 @@ function App() {
 
   function handleKeyboardPress(e) {
     // do not prevent default behavior
-    if(!e.ctrlKey) {
+    if(!(keyboardInputDisabled.current || e.ctrlKey)) {
       const key = e.key.toUpperCase();
       submitGuess(key);
     }
+  }
+
+  function disableKeyboardInput() {
+    keyboardInputDisabled.current = true;
+  }
+  function enableKeyboardInput() {
+    keyboardInputDisabled.current = false;
   }
 
   useEffect(() => {
@@ -250,6 +258,8 @@ function App() {
               dataEndpoint={userDataEndpoint}
               setUserDataLS={setUserDataLS}
               userDataLS={userDataLS}
+              onFocusIn={disableKeyboardInput}
+              onFocusOut={enableKeyboardInput}
             />
           </div>
         )}

@@ -6,6 +6,8 @@ export default function LoginBar({
   dataEndpoint,
   setUserDataLS,
   userDataLS,
+  onFocusIn,
+  onFocusOut
 }) {
   const [userName, setUserName] = useState("");
   const [statusMsg, setStatusMsg] = useState("");
@@ -98,6 +100,8 @@ export default function LoginBar({
             value={userName}
             placeholder="Username"
             onChange={(e) => setUserName(e.target.value)}
+            onFocus={onFocusIn}
+            onBlur={onFocusOut}
           />
           <button className="login-button"
           onClick={logInButtonPressed}>Log In</button>
