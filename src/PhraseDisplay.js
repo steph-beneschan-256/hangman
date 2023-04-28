@@ -24,7 +24,6 @@ export default function PhraseDisplay({answer, unrevealedLetters, gameStatus, hi
     return(
         <div className="phrase-display">
             {words.map((word) => (
-                //
                 <div className="word">
                     {
                     new Array(...word).map((char) => {

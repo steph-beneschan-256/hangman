@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import LetterInput from "./LetterInput";
 import { useState, useEffect, useRef } from "react";
@@ -7,36 +6,28 @@ import ShareLink from "./ShareLink";
 import PenaltyCounter from "./PenaltyCounter";
 import Leaderboard from "./Leaderboard";
 import { gameStates } from "./GameStates";
-import LoginBar from "./components/LoginBar/LoginBar";
-import useLocalStorage from "./components/useLocalStorage/useLocalStorage";
+import LoginBar from "./LoginBar";
+import useLocalStorage from "./useLocalStorage";
 import languageManager from "./languageManager";
 import HowToPlay from "./HowToPlay";
 
 function App() {
-  var customWord = false;
-  var gameHint = "";
   const path = window.location.pathname;
   const userDataEndpoint = "https://lighthall-challenge-3.onrender.com";
-  var userId = "bc17195a-593e-4f6f-9457-7361566c4425"; //example for testing purposes, we need UI that allows users to sign in or create new
 
   const customWordLoaded = useRef(false);
-  const leaderboardLoaded = useRef(false);
   const keyboardInputDisabled = useRef(false); // determines whether the user can use the keyboard to guess letters in the game
 
-  const [loadLeaderboard, setloadLeaderboard] = useState(false);
-
   const [currentModal, setCurrentModal] = useState(""); //should be "leaderboard" or "" or "share-link"
-
   const [gameStatus, setGameStatus] = useState(gameStates.notStarted);
-
+  const [loadLeaderboard, setloadLeaderboard] = useState(false);
   const [leaderboardData, setLeaderboardData] = useState([]);
-
   const [userName, setUserName] = useState("");
   const [userID, setUserID] = useState(""); //using placeholder ID for testing
-  const [userDataLS, setUserDataLS] = useLocalStorage(null, "userData");
-
   const [gamesWon, setGamesWon] = useState(0); // Games that the user has won;
   const [unloggedgamesWon, setunloggedGamesWon] = useLocalStorage(0, "gamesWon"); // Games that the user has won, before logging in
+
+  const [userDataLS, setUserDataLS] = useLocalStorage(null, "userData");
 
   useEffect(() => {
     //load the game answer
@@ -58,7 +49,6 @@ function App() {
         response
           .json()
           .then((a) => {
-            console.log(a);
             setGameAnswer(a.word);
             newGame(a);
           })
@@ -142,7 +132,7 @@ function App() {
       else {
       response
         .json()
-        .then((a) => {
+        .then(() => {
           
         })
         .catch((err) => {
@@ -157,7 +147,6 @@ function App() {
   }
 
   function newGame(wordData) {
-    console.log(wordData);
     const answer = wordData.word.toUpperCase();
     setGameAnswer(answer);
     setHint(wordData.hint);
@@ -221,21 +210,17 @@ function App() {
 
   function newGameButtonClicked() {
     newGame(languageManager.getRandomPhrase());
-    //newGame({word: "thequickfoxjumpsoverthelazydog", hint: "debug word (30 letters)"})
   }
 
   function loggedIn(data) {
     setUserID(data["id"]);
     setUserName(data["name"]);
     setGamesWon(data["score"]);
-    console.log(data);
     if(unloggedgamesWon > 0) {
       //Update leaderboard with games won before log-in
-      console.log(`Games won before login: ${unloggedgamesWon}`);
       incrementScore(unloggedgamesWon);
       setunloggedGamesWon(0);
     }
-
   }
 
   function loggedOut() {
@@ -276,13 +261,13 @@ function App() {
         )}
       </div>
 
-      {true && (
-        <>
+
           {(gameStatus === gameStates.notStarted) && <>
             <h1>Hangman</h1>
             <h2>By Mauro, Seij, and Steph</h2>
             {/* <img src="stickman/0.png" alt=""></img> */}
           </>}
+
           {gameStatus !== gameStates.notStarted && (
             <div className={"game-status-display"}>
               <PhraseDisplay
@@ -300,18 +285,18 @@ function App() {
 
           {(gameStatus === gameStates.won) && (
             <>
-              <div>
+              <h2>
                 YOU WON!
-              </div>
+              </h2>
               <div>
                 {gamesWonString()}
               </div>
             </>
           )}
           {(gameStatus === gameStates.lost) && (
-            <div>
+            <h2>
               Better luck next time!
-            </div>
+            </h2>
           )}
     
       <div>
@@ -351,13 +336,10 @@ function App() {
           </div>
           <div>
             
-
           </div>
         </div>
       )}
-
-        </>
-      )}
+      
     </div>
   );
 }

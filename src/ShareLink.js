@@ -7,14 +7,10 @@ export default function ShareLink ({ dataEndpoint, onClose }) {
   //this UI component encompasses all functionality related to creating a new word
 
   const appLink = 'localhost:3000'; //this needs to be updated when hosting occurs
-  const toggleDefaultMessage = 'Create a game for a friend';
   const [link, setLink] = useState('');
   const [warning, setWarning] = useState('');
   const [userWord, setUserWord] = useState('');
   const [userHint, setUserHint] = useState('');
-  const [toggleText, setToggleText] = useState(toggleDefaultMessage);
-  const [formVisibility, setFormVisibility] = useState('hidden');
-  const [submitButtonClass, setSubmitButtonClass] = useState('inactive');
   const [copyMessage, setCopyMessage] = useState('');
   const [linkDisplay, setLinkDisplay] = useState('hidden')
 
@@ -24,40 +20,13 @@ export default function ShareLink ({ dataEndpoint, onClose }) {
   const charLimit = 30;
 
   const handleWordChange = (e) => {
-    //may not enter space as first character
-    //must only enter letters a-z A-Z and space
     setUserWord(e.target.value);
     validateInput(e.target.value, userHint);
-    // if (e.target.value.length > 0) {
-    //   if (!/^[A-Za-z\s\b]$/.test(e.target.value.slice(-1))) {
-    //     setWarning('Please enter a valid letter character from a through z');
-    //   } else {
-    //       if (e.target.value.length > charLimit) {
-    //         setWarning('Error: Character length for word shall not exceed ' + charLimit)
-    //       }
-    //       else {
-    //         checkWarning();
-    //         if(!/^[\s]$/.test(e.target.value[0])) {
-    //           setUserWord(e.target.value)
-    //         }
-    //       }
-    //     }
-    // } else {
-    //   checkWarning();
-    //   setUserWord(e.target.value)
-    // }
   }
 
   const handleHintChange = (e) => {
     setUserHint(e.target.value);
     validateInput(userWord, e.target.value);
-    // if (e.target.value.length > charLimit) {
-    //   setWarning('Error: Character length for hint shall not exceed ' + charLimit)
-    // }
-    // else {
-    //   checkWarning();
-    //   setUserHint(e.target.value)
-    // }
   }
 
   function containsAtLeastOneLetter(str) {
@@ -93,28 +62,8 @@ export default function ShareLink ({ dataEndpoint, onClose }) {
     }
   }
 
-  const toggleForm =() => {
-    //changes shows or hides the form element for creating a word
-    if (toggleText === toggleDefaultMessage) {
-      setFormVisibility('visible');
-      setToggleText('Cancel');
-    } else {
-      if (toggleText === 'Cancel') {
-        setUserWord('');
-        setUserHint('');
-        setLink('');
-        setToggleText(toggleDefaultMessage);
-        setFormVisibility('hidden');
-      }
-    }
-  }
-
   const generateLinkHandler = () => {
-    //check if warning exists or not
-    // if (warning.length > 0 || userWord.length === 0) {
-    //   return;
-    // }
-    //no warning, submit POST to API endpoint
+    //Submit POST to API endpoint
 
     setGeneratingLink(true);
 

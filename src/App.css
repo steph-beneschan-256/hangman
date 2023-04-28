@@ -10,12 +10,6 @@
   padding-top: 5%;
 }
 
-.current-user-data {
-  height: 100%;
-  max-height: 100px;
-  background-color: red;
-}
-
 /* --- For logging in --- */
 
 .logged-in-as {
