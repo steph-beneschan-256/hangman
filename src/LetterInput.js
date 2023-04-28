@@ -1,4 +1,5 @@
 import './letterInput.css';
+import languageManager from './languageManager';
 
 /*
 Notes:
@@ -17,7 +18,6 @@ Letters are highlighted depending on whether they were already guessed and, if s
 
 */
 function KeyBoard({onLetterSelected, guessesMade}) {
-    const keyboardRows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
 
     function getSecondaryClass(letter) {
         if(guessesMade.has(letter))
@@ -26,7 +26,7 @@ function KeyBoard({onLetterSelected, guessesMade}) {
     } 
     return(
         <div>
-            {keyboardRows.map(row => (
+            {languageManager.getKeyboardRows().map(row => (
                 <div className="keyboard-row">
                     {new Array(...row).map(letter => (
                         <button className={`keyboard-tile ${getSecondaryClass(letter)}`} 

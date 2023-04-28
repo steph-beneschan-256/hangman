@@ -1,5 +1,6 @@
 import { gameStates } from "./GameStates";
 import "./phraseDisplay.css";
+import languageManager from "./languageManager";
 
 /*
     We can think of three kinds of characters in the answer phrase:
@@ -8,31 +9,10 @@ import "./phraseDisplay.css";
     * Letters that the user has already guessed
 */
 
-export default function PhraseDisplay({answer, unrevealedLetters, isSpecialChar, gameStatus, hint}) {
+export default function PhraseDisplay({answer, unrevealedLetters, gameStatus, hint}) {
     console.log('in phrase display with the gameanswer: ' + answer);
 
-    function getWords(str) {
-        /*
-        Split answer into words
-        */
-        //split answer into words
-        //if special chars. are present, append first one to end of first word
-        // for now, hardcode spec. char. regex string
-        const words = answer.split(/ |(?<=[A-Za-z][^A-Za-z]+)\b/);
-        return words;
-
-        //TODO: 
-        //const maxWordLen = words.length;
-        //const 
-
-        /*
-        all letter tiles should be the same size
-        each word needs to fit on one line
-        */
-    }
-
-    const words = getWords(answer);
-
+    const words = languageManager.getWords(answer);
     let maxWordLen = 0;
     words.forEach(word => {
         if(word.length > maxWordLen)
@@ -43,13 +23,13 @@ export default function PhraseDisplay({answer, unrevealedLetters, isSpecialChar,
     
     return(
         <div className="phrase-display">
-            {getWords(answer).map((word) => (
+            {words.map((word) => (
                 //
                 <div className="word">
                     {
                     new Array(...word).map((char) => {
                         let classes = "char-tile";
-                        if(!isSpecialChar(char)) {
+                        if(!languageManager.isSpecialChar(char)) {
                             classes += " letter-tile";
                             if(gameStatus === gameStates.won)
                                 classes += " game-won";
@@ -61,7 +41,7 @@ export default function PhraseDisplay({answer, unrevealedLetters, isSpecialChar,
                             <div className={classes} style={{
                                 "width": `${tileWidth}vw`,
                                 "height": `${tileHeight}vw`, 
-                                "font-size": `min(${tileWidth}vw, 50px)`,
+                                "fontSize": `min(${tileWidth}vw, 50px)`,
                                 }}>
                                 {((gameStatus === gameStates.inProgress) && unrevealedLetters.has(char)) ? "": char}
                             </div>
