@@ -31,6 +31,8 @@ function App() {
   const customWordLoaded = useRef(false);
   const leaderboardLoaded = useRef(false);
 
+  const [showLeaderboard, setShowLeaderBoard] = useState(false);
+
   const [gameStatus, setGameStatus] = useState(gameStates.notStarted);
 
   const [leaderboardData, setLeaderboardData] = useState([]);
@@ -87,6 +89,10 @@ function App() {
       });
     }
   }, []);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyPress);
+  }, [handleKeyPress]);
 
   const [gameAnswer, setGameAnswer] = useState("");
   const [hint, setHint] = useState("");
@@ -165,6 +171,19 @@ function App() {
     setPenalties(0);
 
     setGameStatus(gameStates.inProgress);
+  }
+
+  function handleKeyPress(keyEvent) {
+    keyEvent.preventDefault();
+    console.log(keyEvent);
+    const key = keyEvent.key.toUpperCase();
+    submitGuess(key);
+  }
+
+  function submitGuess(guessedChar) {
+    //todo: check that character is valid
+    if(isLetter(guessedChar))
+      onGuessSubmitted(guessedChar);
   }
 
   function onGuessSubmitted(guessedChar) {
@@ -259,20 +278,23 @@ function App() {
               />
             </div>
           )}
+    
+      <div>
+        {(gameStatus === gameStates.inProgress) ? 
+        (<>
+          <LetterInput isValidLetter={isLetter} guessesMade={guessesMade}
+          onLetterSelected={submitGuess}/>
+        </>)
+        :
+        (<div>
+          <button onClick={newGameButtonClicked}>New Game</button>
+          <button onClick={() => setShowLeaderBoard(true)}>Leaderboard</button>
+        </div>)}
+      </div>
 
-          <div>
-            {gameStatus === gameStates.inProgress ? (
-              <>
-                <LetterInput
-                  isValidLetter={isLetter}
-                  guessesMade={guessesMade}
-                  onGuessSubmitted={onGuessSubmitted}
-                />
-              </>
-            ) : (
-              <button onClick={newGameButtonClicked}>New Game</button>
-            )}
-          </div>
+      {showLeaderboard && <Leaderboard leaderboardData={leaderboardData} currentUserID={userId}
+      onClose={() => setShowLeaderBoard(false)}/>}
+    </div>
 
           {leaderboardLoaded && (
             <Leaderboard

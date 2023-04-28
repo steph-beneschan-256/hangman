@@ -1,8 +1,9 @@
 import "./leaderboard.css";
 
-export default function Leaderboard({leaderboardData, currentUserID}) {
+export default function Leaderboard({leaderboardData, currentUserID, onClose}) {
 
     return(
+        <div className="darken-screen">
         <div className="leaderboard">
             <h2>Top 10 Players:</h2>
             {leaderboardData ? (<>
@@ -31,6 +32,8 @@ export default function Leaderboard({leaderboardData, currentUserID}) {
                 </div>)
             })}</>)
         :(<div>Loading leaderboard data...</div>)}
+        <button onClick={onClose}>Close</button>
+        </div>
         </div>
     )
 }
